@@ -1,0 +1,41 @@
+<b:beans xmlns="http://www.springframework.org/schema/security"
+		 xmlns:b="http://www.springframework.org/schema/beans"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+
+	<http use-expressions="true">
+		<intercept-url pattern="/login.html" access="permitAll" />
+		<intercept-url pattern="/css/**" access="permitAll" />
+		<intercept-url pattern="/fonts/**" access="permitAll" />
+		<intercept-url pattern="/images/**" access="permitAll" />
+		<intercept-url pattern="/favicon.ico" access="permitAll" />
+		<intercept-url pattern="/js/**" access="permitAll" />
+ 		<intercept-url pattern="/**" access="hasAuthority('Authenticated')" />
+		
+        <form-login
+        	login-page="/login.html"
+        	login-processing-url="/perform_login"
+        	default-target-url="/main.html"
+        	username-parameter="username"
+        	password-parameter="password"/>
+        	
+        <logout
+        	logout-url="/perform_logout"
+        	delete-cookies="JSESSIONID" />
+        <csrf/>
+	</http>
+	
+	<!-- Autenticación por base de datos -->
+	<authentication-manager>
+	  <authentication-provider>
+		<jdbc-user-service data-source-ref="aplicacion"
+		  users-by-username-query=
+		    "select username, password, enabled from gprousers.users where username = ?"
+		  authorities-by-username-query=
+		    "select username, authority as role from gprousers.granted_authorities where username = ?" />
+	  </authentication-provider>
+	</authentication-manager>
+
+</b:beans>

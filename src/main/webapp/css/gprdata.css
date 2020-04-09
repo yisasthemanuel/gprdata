@@ -1,0 +1,12 @@
+/*
+ * GPR Style Sheet
+ */
+ 
+ 
+ .full {
+    background: url('../images/grpdata-background.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}

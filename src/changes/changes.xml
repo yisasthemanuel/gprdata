@@ -1,0 +1,93 @@
+<document xmlns="http://maven.apache.org/changes/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
+          
+	<properties>
+    	<title>GPRO Data Project</title>
+    	<author email="yisasthemanuel@gmail.com">Jesús Manuel Pérez Lobato</author>
+  	</properties>
+  	<body>
+<!-- Versión 0.0.5 -->      
+      <release version="0.0.5-SNAPSHOT" date="2016-12-23" description="Versión de mantenimiento sobre la versión 0.0.4-SNAPSHOT">
+          <action dev="yisasthemanuel" type="add">
+            Enlazar los datos de los managers con los datos de usuarios de la aplicación (meter tabla intermedia)
+          </action>
+          <action dev="yisasthemanuel" type="add">
+            Incluir tabla de conexiones a la aplicación (incluir información sobre el navegador que utiliza el usuario)
+          </action>
+          <action dev="yisasthemanuel" type="add">
+            Incluir enlace para consultar los datos de carreras (hay que importar antes esos datos)
+          </action>
+          <action dev="yisasthemanuel" type="update">
+            Poner la frase "Conectado como " y el nombre de usuario y poner imagen de salir para hacer el logout
+          </action>
+          <action dev="yisasthemanuel" type="update">
+            Eliminar el logout de la página de edición de la copa
+          </action>
+          <action dev="yisasthemanuel" type="update">
+            Eliminar página index.jsp y poner como welcome page la página de login o la principal de logado (que exige login previo)
+          </action>
+      </release>
+
+<!-- Versión 0.0.4 -->      
+  		<release version="0.0.4-SNAPSHOT" date="2016-12-08" description="Versión de mantenimiento sobre la versión 0.0.3-SNAPSHOT">
+      		<action dev="yisasthemanuel" type="update">
+        		Se incluye listener web para asegurar que ehcache se para al parar el tomcat
+      		</action>
+      		<action dev="yisasthemanuel" type="add">
+        		Se incluye autenticación por base de datos (users, authorities y granted_authorities)
+      		</action>
+    	</release>
+
+<!-- Versión 0.0.3 -->
+  		<release version="0.0.3-SNAPSHOT" date="2016-10-23" description="Versión de mantenimiento sobre la versión 0.0.2-SNAPSHOT">
+      		<action dev="yisasthemanuel" type="update">
+        		Se incluye enlace en la página principal para que vaya a la página de la copa (en un futuro en la ventana principal se mostrarán botones gordos)
+      		</action>
+      		<action dev="yisasthemanuel" type="update">
+        		Se incluye enlace en la página que muestra las clasificaciones de la copa para volver al modo editar
+      		</action>
+      		<action dev="yisasthemanuel" type="update">
+        		Se internacionalizan más recursos
+      		</action>
+      		<action dev="yisasthemanuel" type="update">
+        		Se incluye la característica de guardar las imágenes de los managers en blobs
+      		</action>
+      		<action dev="yisasthemanuel" type="add">
+        		Se incluye el servlet que muestra la imagen de un manager tirando del campo blob
+      		</action>
+      		<action dev="yisasthemanuel" type="add">
+        		Se incluye el uso de una caché para las imágenes de los managers
+      		</action>
+    	</release>
+    	
+<!-- Versión 0.0.2 -->
+  		<release version="0.0.2-SNAPSHOT" date="2016-10-16" description="Versión de mantenimiento sobre la versión 0.0.1-SNAPSHOT">
+      		<action dev="yisasthemanuel" type="update">
+        		Se sube a la versión 4.2.5.RELEASE de Spring para adecuarse a lo recomendado por la versión 4.0.4 de Spring Security
+      		</action>
+      		<action dev="yisasthemanuel" type="update">
+        		Se incluye una imagen de fondo para la aplicación
+      		</action>
+      		<action dev="yisasthemanuel" type="update">
+        		Se añade un botón de "Salir" (Logout) en la plantilla de la GPR Cup
+      		</action>
+    	</release>
+    	
+<!-- Versión 0.0.1 -->
+  		<release version="0.0.1-SNAPSHOT" date="2016-10-11" description="Primera versión de la aplicación en la que se aplica la seguridad y acceso a través de usuario/contraseña)">
+      		<action dev="yisasthemanuel" type="add">
+        		Se aplica seguridad Spring (versión 4.0.4) a la aplicación, incluyendo formulario de login
+      		</action>
+      		<action dev="yisasthemanuel" type="update">
+        		Se incluye bootstrap para los estilos de la aplicación
+      		</action>
+      		<action dev="yisasthemanuel" type="update">
+        		Se cambia de ubicación la página que incluye los tags de uso general en las páginas jsp
+      		</action>
+      		<action dev="yisasthemanuel" type="remove">
+        		Se eliminan páginas innecesarias en el raíz de la aplicación
+      		</action>
+    	</release>
+  	</body>
+</document>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/decorators">
+	<decorator name="gprcup" page="gprcup-theme.jsp">
+   		<pattern>/gprcup/*</pattern>
+	</decorator>
+
+    <decorator name="default-theme" page="default-theme.jsp">
+        <pattern>/*</pattern>
+    </decorator>
+</decorators>
