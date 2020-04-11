@@ -89,7 +89,9 @@ public class ResultsController {
         
 		// Añadimos la llamada al microservicio
 		RestTemplate restTemplate = new RestTemplate();
-		List<ManagerResult> results = restTemplate.getForObject("http://localhost:9080/managers/results/" + season.getIdSeason() + "/" + race.getIdRace(), List.class);
+		// TODO: Hay que configurar bien la url (ahora está a jierro)
+		@SuppressWarnings("unchecked")
+		List<ManagerResult> results = restTemplate.getForObject("http://host.docker.internal:9080/managers/results/" + season.getIdSeason() + "/" + race.getIdRace(), List.class);
 		
         // Añadimos la lista de managers en función de la carrera actual
 		modelAndView.addObject("managersList", results);
