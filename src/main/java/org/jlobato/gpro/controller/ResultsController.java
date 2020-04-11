@@ -1,11 +1,12 @@
 package org.jlobato.gpro.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.jlobato.gpro.dao.mybatis.facade.FachadaManager;
 import org.jlobato.gpro.dao.mybatis.facade.FachadaSeason;
-import org.jlobato.gpro.dao.mybatis.facade.FachadaTeam;
+import org.jlobato.gpro.dao.mybatis.model.ManagerResult;
 import org.jlobato.gpro.dao.mybatis.model.Race;
 import org.jlobato.gpro.dao.mybatis.model.Season;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -31,20 +33,7 @@ public class ResultsController {
 	 * 
 	 */
 	@Autowired
-	private FachadaTeam fachadaTeam;
-	
-	/**
-	 * 
-	 */
-	@Autowired
 	private FachadaSeason fachadaSeason;
-	
-	/**
-	 * 
-	 */
-	@Autowired
-	private FachadaManager fachadaManager;
-	
 	
 	/**
 	 * 
@@ -67,25 +56,50 @@ public class ResultsController {
 	 * @return
 	 */
 	@GetMapping(value = "/results")
-	public ModelAndView getResults(@RequestParam(value="currentSeason", required=false) String currentSeason)	{
+	public ModelAndView getResults(
+			@RequestParam(value="currentSeason", required=false) String currentSeason,
+			@RequestParam(value="currentRace", required=false) String currentRace)	{
+		
+		// TODO: Meter equipo por defecto 
+		
 		//Modelo
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("Texto", "Eso es asín");
 		
-        Season current = null;
+		// Get the season object
+        Season season = null;
         if (currentSeason != null) {
-        	current = fachadaSeason.getSeason(new Integer(currentSeason));
+        	season = fachadaSeason.getSeason(new Integer(currentSeason));
         } else {
-            current = fachadaSeason.getCurrentSeason();
+            season = fachadaSeason.getCurrentSeason();
         }
         
-        Race currentRace = fachadaSeason.getCurrentRace();
+        // Get the race object
+        Race race = null;
+        if (currentRace != null) {
+        	race = fachadaSeason.getRace(season.getIdSeason(), Integer.parseInt(currentRace));
+        }
+        else {
+        	race = fachadaSeason.getCurrentRace();
+        }
         
-        // Añadimos la lista de managers
-		modelAndView.addObject("managersList", fachadaManager.getManagers(fachadaTeam.getDefaultTeam(), currentRace));
+		// Temporada y carrera actual
+        modelAndView.addObject("currentSeasonID", season.getIdSeason());
+        modelAndView.addObject("currentRaceID", race.getIdRace());
         
-        modelAndView.addObject("currentSeasonID", current.getIdSeason());
-        modelAndView.addObject("currentRace", currentRace.getIdRace());
+		// Añadimos la llamada al microservicio
+		RestTemplate restTemplate = new RestTemplate();
+		List<ManagerResult> results = restTemplate.getForObject("http://localhost:9080/managers/results/" + season.getIdSeason() + "/" + race.getIdRace(), List.class);
+		
+        // Añadimos la lista de managers en función de la carrera actual
+		modelAndView.addObject("managersList", results);
+		
+		
+        // Combo de temporadas
+        modelAndView.addObject("seasonList", fachadaSeason.getAvailableSeasons());
+        // Combo de carreras
+        modelAndView.addObject("racesList", fachadaSeason.getRaces(season));
+        
         
 		//Vista
 		modelAndView.setViewName("/results/putresults");

@@ -2,34 +2,62 @@
 <!doctype html>
 <head>  
 	<title><spring:message code="application.title"/></title>  
+
+<!-- Para quitarle el borde a la tabla -->
+<style>
+  .table-borderless tr, .table-borderless td, .table-borderless th {
+    border: none !important;
+   }
+</style>	
 </head>  
-<body>  
-	
-	<div class="row">Resultados para una jornada (${Texto})</div>
+<body>
+
+<script>
+function reloadSeason(urlAction) {
+	document.getElementById("theForm").action = urlAction;
+	document.getElementById("theForm").submit();	
+}
+</script>
+
+<c:url var="reloadAction" value="/results/results.html"/>
+  
+<form class="form-group" name="theForm" id="theForm">
 	
 	<div id="cabecera">
-		<div id="idSeason">
-			<label for="season">Season:</label>
-			<input type="text" id="season" name="season" value="${currentSeasonID}" maxlength="5" size="10">
+		<!-- Season combo -->
+		<div id="currentSeasonContainer"> 
+			<label for="currentSeason"><spring:message code="label.season"/>:</label>
+			<select class="form-control form-control-sm" name="currentSeason" id="currentSeason" onchange="reloadSeason('${reloadAction}')">
+				<c:forEach items="${seasonList}" var="season" varStatus="status">
+					<option value="${season.idSeason}" ${currentSeasonID eq season.idSeason ? 'selected' : ''}>${season.nameSeason}</option>
+				</c:forEach>
+			</select>
 		</div>
-		<div id="idRace">
-			<label for="season">Race:</label>
-			<input type="text" id="race" name="race" value="${currentRace}" maxlength="5" size="10">
+		<!-- Races combo -->
+		<div id="currentRaceContainer">
+			<label for="currentRace"><spring:message code="label.race"/>:</label>
+			<select class="form-control form-control-sm" name="currentRace" id="currentRace" onchange="reloadSeason('${reloadAction}')">
+				<c:forEach items="${racesList}" var="race" varStatus="status">
+					<option value="${race.idRace}" ${currentRaceID eq race.idRace ? 'selected' : ''}>Season ${race.idSeason}, Race ${race.idRace}</option>
+				</c:forEach>
+			</select>
 		</div>
-		<div id="results">
-			<table>
+	</div>
+</form>		
+	<div id="results">
+		<div id="exito-critica-publico" class="alert alert-success" role="alert" style="display:none"><spring:message code="label.result.success"/></div>
+		<div id="alert-error" class="alert alert-danger" role="alert" style="display:none"><spring:message code="label.result.error"/></div>
+		
+		<div class="table-responsive">
+		<table class="table table-sm table-hover table-borderless">
+			<thead>
 				<tr>
-					<td>
-					<div id="manager">
-						<label>Manager code (5 characters)</label>
-					</div>
-					</td>
-					<td>
-					<div id="racePosition">
-						<label>Race position(1 to 40 or leave blank for DNS)</label>
-					</div>
-					</td>
+					<th scope="col"><spring:message code="label.table.manager"/></th>
+					<th scope="col"><spring:message code="label.table.raceposition"/></th>
+					<th scope="col"><spring:message code="label.table.gridposition"/></th>
 				</tr>
+			</thead>
+			<tbody>
 				<c:forEach items="${managersList}" var="manager" varStatus="status">
 				<tr>
 					<td>
@@ -39,25 +67,31 @@
 					</td>
 					<td>
 					<div id="racePosition">
-						<input type="text" value="" id="racePosition" name="racePosition" maxlength="5" size="10"></input>
+						<input type="text" value="${manager.racePosition}" id="racePosition" name="racePosition" maxlength="5" size="10"></input>
+					</div>
+					</td>
+					<td>
+					<div id="gridPosition">
+						<input type="text" value="${manager.gridPosition}" id="gridPosition" name="gridPosition" maxlength="5" size="10"></input>
 					</div>
 					</td>
 				</tr>
 				</c:forEach>
-			</table>
+			</tbody>
+		</table>
 		</div>
 	</div>
 	
-	<input type="button" id="putresults" value='<spring:message code="label.copa.edit"/>'></input>
-		
+	<button type="button" id="putresults" class="btn btn-primary"><spring:message code="label.result.update"/></button>
+	
 <script type="text/javascript">
 
 $(document).ready(function() {
 	$('#putresults').click(function() {
 		$('#cargando').show();
 		var race = {};
-		race["idSeason"] = $('#season').val();
-		race["idRace"] = $('#race').val();
+		race["idSeason"] = $('#currentSeason').val();
+		race["idRace"] = $('#currentRace').val();
 		
 		var codManagers = [];
 		$("div[id=manager]").each(function() {
@@ -73,10 +107,18 @@ $(document).ready(function() {
 			});
 		});
 		
+		var griPositions = [];
+		$("div[id=gridPosition]").each(function() {
+			$(this).find("input[id=gridPosition]").each(function() {
+				griPositions.push($(this).val());
+			});
+		});
+		
 		var results = [];
 		for (var indice in codManagers) {
 			results.push({codeManager : codManagers[indice],
-					racePosition : racPositions[indice]});
+					racePosition : racPositions[indice],
+					gridPosition : griPositions[indice]});
 		}
 		
 		race["results"] = results;
@@ -92,11 +134,13 @@ $(document).ready(function() {
 		    data: jsonString,
 		    success: function (data, textStatus, xhr) {
 		    	$('#cargando').hide();
-		    	alert("OK");
+		    	$('#exito-critica-publico').show();
+		    	$('#alert-error').hide();
 		    },
 		    error: function (xhr, textStatus, errorThrown) {
 		    	$('#cargando').hide();
-		    	alert("ERROR");
+		    	$('#alert-error').show();
+		    	$('#exito-critica-publico').hide();
 		    }
 		});
 	});

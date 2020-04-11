@@ -45,7 +45,6 @@
 		<spring:message code="label.season"/>:
 		<select name="currentSeason" id="currentSeason" onchange="reloadSeason('${reloadAction}')">
 			<c:forEach items="${seasonList}" var="season" varStatus="status">
-				<fmt:formatDate var='formattedDate' value='${race.raceDate}' pattern='dd/MM/yyyy HH:mm:ss z'/>
 				<option value="${season.idSeason}" ${lastSeason eq season.idSeason ? 'selected' : ''}>${season.nameSeason}</option>
 			</c:forEach>
 		</select>
@@ -271,12 +270,21 @@
 	<input type="submit" value="<spring:message code="label.show"/>">
 	<br>
 	<br>
-	<div>
-		<a href="${seedingActionURL}"><spring:message code="label.seeding"/></a>
-	</div>
-	<div>
-		<a href="${statisticsActionURL}"><spring:message code="label.statistics"/></a>
-	</div>
+	<table>
+		<tr>
+		<td>
+			<div>
+				<a href="${seedingActionURL}"><spring:message code="label.seeding"/></a>
+			</div>
+		</td>
+		<td>&nbsp;&nbsp;</td>
+		<td>
+			<div>
+				<a href="${statisticsActionURL}"><spring:message code="label.statistics"/></a>
+			</div>
+		</td>
+		</tr>
+	</table>
 	
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
