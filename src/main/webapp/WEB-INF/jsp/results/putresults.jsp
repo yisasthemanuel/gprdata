@@ -88,7 +88,10 @@ function reloadSeason(urlAction) {
 
 $(document).ready(function() {
 	$('#putresults').click(function() {
+		$('#exito-critica-publico').hide();
+		$('#alert-error').hide();
 		$('#cargando').show();
+		
 		var race = {};
 		race["idSeason"] = $('#currentSeason').val();
 		race["idRace"] = $('#currentRace').val();
@@ -129,7 +132,8 @@ $(document).ready(function() {
 		$.ajax({
 		    type: "PUT",
 		    //url: "http://localhost:8080/gproapi/managers/results",
-		    url: "http://localhost:9080/managers/results",
+		    //url: "http://localhost:9080/managers/results",
+		    url: "${gproresultsUrlUpdate}",
 		    contentType: "application/json",
 		    data: jsonString,
 		    success: function (data, textStatus, xhr) {

@@ -12,6 +12,7 @@ import org.jlobato.gpro.dao.mybatis.model.Season;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,9 @@ public class ResultsController {
 	 */
 	@Autowired
 	private FachadaSeason fachadaSeason;
+	
+	@Value("${url.prefix}")
+	private String urlGproResults;
 	
 	/**
 	 * 
@@ -91,7 +95,9 @@ public class ResultsController {
 		RestTemplate restTemplate = new RestTemplate();
 		// TODO: Hay que configurar bien la url (ahora está a jierro)
 		@SuppressWarnings("unchecked")
-		List<ManagerResult> results = restTemplate.getForObject("http://host.docker.internal:9080/managers/results/" + season.getIdSeason() + "/" + race.getIdRace(), List.class);
+		List<ManagerResult> results = restTemplate.getForObject(urlGproResults + "/managers/results/" + season.getIdSeason() + "/" + race.getIdRace(), List.class);
+		
+		modelAndView.addObject("gproresultsUrlUpdate", urlGproResults + "/managers/results");
 		
         // Añadimos la lista de managers en función de la carrera actual
 		modelAndView.addObject("managersList", results);

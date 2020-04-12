@@ -168,15 +168,8 @@
     	<groupId>org.jlobato.gpro</groupId>
     	<artifactId>gprowebsession</artifactId>
     	<version>${org.jlobato.gpro.version}</version>
-	</dependency>	
+	</dependency>
 	
-	<!-- GproWebSession -->
-<!-- 	<dependency> -->
-<!--     	<groupId>org.jlobato.gpro</groupId> -->
-<!--     	<artifactId>gproresultsapi</artifactId> -->
-<!--     	<version>${org.jlobato.gproresults.version}</version> -->
-<!-- 	</dependency> -->
-		
 	<!--  jackson (json) -->
 	<dependency>
     	<groupId>com.fasterxml.jackson.core</groupId>
@@ -194,6 +187,7 @@
 	    <version>${com.fasterxml.jackson.version}</version>
 	</dependency>	
   </dependencies>
+  
   <build>
     <finalName>gprdata</finalName>
     <resources>
@@ -280,7 +274,7 @@
     <maven.compiler.target>1.8</maven.compiler.target>
     <failOnMissingWebXml>false</failOnMissingWebXml>
 	<docker.image.prefix>yisasthemanuel</docker.image.prefix>
-    
+	<spring-cloud.version>Hoxton.SR1</spring-cloud.version>		    
   </properties>
   
 <!-- Generar el informe de release  -->
@@ -317,5 +311,5 @@
       </roles>
       <timezone>Europe/Madrid</timezone>
     </developer>
-  </developers>
+  </developers> 
 </project>
