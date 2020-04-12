@@ -20,7 +20,7 @@ public class TemplateModelBuilder {
 	 */
 	private TemplateModelBuilder() {
 		super();
-		this.model = new HashMap<String, Object>();
+		this.model = new HashMap<>();
 	}
 	
 	/**

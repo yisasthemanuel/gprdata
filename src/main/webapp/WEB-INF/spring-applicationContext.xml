@@ -43,7 +43,4 @@
 	    class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
 	    <property name="defaultLocale" value="en"/>
 	</bean>
-	
-	<bean id="templateService" class="org.jlobato.gpro.services.templates.FreemarkerTemplateService">
-	</bean>	
 </beans>
