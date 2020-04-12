@@ -18,19 +18,31 @@ import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * 
- * @author jmplobato
- *
+ * The Class FreemarkerTemplateService.
  */
-@Service
+@Service("freemarkerTemplateService")
 public class FreemarkerTemplateService implements TemplateService {
 	
-	private static final transient Logger logger = LoggerFactory.getLogger(FreemarkerTemplateService.class);
+	/** The Constant logger. */
+	private static final Logger logger = LoggerFactory.getLogger(FreemarkerTemplateService.class);
 	
+    /** The cfg. */
     private Configuration cfg;
+    
+    /** The url plantillas. */
     private URL urlPlantillas;
+    
+    /** The dir base plantilla. */
     private File dirBasePlantilla;
 
+	/**
+	 * Process template.
+	 *
+	 * @param idPlantilla the id plantilla
+	 * @param model the model
+	 * @return the string
+	 * @throws TemplateException the template exception
+	 */
 	@Override
 	public String processTemplate(String idPlantilla, Map<String, Object> model) throws TemplateException {
         CharArrayWriter output = new CharArrayWriter();
@@ -38,6 +50,14 @@ public class FreemarkerTemplateService implements TemplateService {
         return output.toString();
 	}
 
+	/**
+	 * Process template.
+	 *
+	 * @param idPlantilla the id plantilla
+	 * @param model the model
+	 * @param out the out
+	 * @throws TemplateException the template exception
+	 */
 	@Override
 	public void processTemplate(String idPlantilla, Map<String, Object> model, Writer out) throws TemplateException {
         try {
@@ -45,53 +65,63 @@ public class FreemarkerTemplateService implements TemplateService {
             model.put("ruta", dirBasePlantilla.toURI());
             tpl.process(model, out);
         } catch (Exception e) {
-            logger.error("Error generando plantilla con id: '" + idPlantilla + "'", e);
-            throw new TemplateException(e.getMessage(),e);
+            throw new TemplateException(e.getMessage(), e);
         }
 	}
 	
 	/**
-	 * 
-	 * @param nameTemplate
-	 * @return
-	 * @throws IOException
+	 * Gets the template.
+	 *
+	 * @param nameTemplate the name template
+	 * @return the template
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
     public Template getTemplate(String nameTemplate) throws IOException {
         return cfg.getTemplate(nameTemplate);
     }
 
     /**
-     * 
-     * @return
+     * Gets the url plantillas.
+     *
+     * @return the url plantillas
      */
 	public URL getUrlPlantillas() {
 		return urlPlantillas;
 	}
 
 	/**
-	 * 
-	 * @param urlPlantillas
+	 * Sets the url plantillas.
+	 *
+	 * @param urlPlantillas the new url plantillas
 	 */
 	public void setUrlPlantillas(URL urlPlantillas) {
 		this.urlPlantillas = urlPlantillas;
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Gets the dir base plantilla.
+	 *
+	 * @return the dir base plantilla
 	 */
 	public File getDirBasePlantilla() {
 		return dirBasePlantilla;
 	}
 
 	/**
-	 * 
-	 * @param dirBasePlantilla
+	 * Sets the dir base plantilla.
+	 *
+	 * @param dirBasePlantilla the new dir base plantilla
 	 */
 	public void setDirBasePlantilla(File dirBasePlantilla) {
 		this.dirBasePlantilla = dirBasePlantilla;
 	}
 
+	/**
+	 * Instantiates a new freemarker template service.
+	 *
+	 * @throws URISyntaxException the URI syntax exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public FreemarkerTemplateService() throws URISyntaxException, IOException {
         // Se determina donde estan las plantillas en el disco.
         urlPlantillas = Thread.currentThread().getContextClassLoader().getResource("templates");
