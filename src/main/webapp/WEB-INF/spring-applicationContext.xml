@@ -19,28 +19,28 @@
 	
 	<context:annotation-config />
 	
-	<!-- Imports the configurations of the different infrastructure systems of the application -->
-	<import resource="spring-database.xml" /> <!-- Data --> 
-	<import resource="spring-mvc.xml" /> <!-- MVC -->
-	<import resource="spring-security.xml" /> <!-- Security -->
-
-	<!-- Para que se hagan visibles propiedades del sistema en la configuración -->
-	<bean id="systemPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" />
-
 	<!--  Locale i18n -->
 	<bean id="messageSource"
 	    class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 	    <property name="basename" value="classpath:resources/messages" />
 	    <property name="defaultEncoding" value="UTF-8"/>
 	</bean>
-
+	
+	<bean id="localeResolver"
+	    class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+	    <property name="defaultLocale" value="en"/>
+	</bean>
+	
 	<bean id="localeChangeInterceptor"
 	    class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
 	    <property name="paramName" value="lang" />
 	</bean>
 
-	<bean id="localeResolver"
-	    class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
-	    <property name="defaultLocale" value="en"/>
-	</bean>
+	<!-- Imports the configurations of the different infrastructure systems of the application -->
+	<import resource="spring-database.xml" /> <!-- Data --> 
+	<import resource="spring-mvc.xml" /> <!-- MVC -->
+	<import resource="spring-security.xml" /> <!-- Security -->
+
+	<!-- Para que se hagan visibles propiedades del sistema en la configuración -->
+	<bean id="systemPlaceholderConfigurer" class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
 </beans>
