@@ -20,10 +20,10 @@
 <c:url var="faviconUrl" value="/favicon.ico"/>
 <link rel="icon" type="image/x-icon" href="${faviconUrl}"/>
 
-<c:url var="jQueryMinUrl" value="/images/jquery.min.js"/>
+<c:url var="jQueryMinUrl" value="/js/jquery.min.js"/>
 <script src="${jQueryMinUrl}"/>
 
-<script src="/gprdata/images/jquery-ui.min.js"></script>
+<script src="/gprdata/js/jquery-ui.min.js"></script>
 <link href="/gprdata/images/perfect-scrollbar.css" rel="stylesheet">
 <script src="/gprdata/images/perfect-scrollbar.min.js"></script>
 <style type="text/css">

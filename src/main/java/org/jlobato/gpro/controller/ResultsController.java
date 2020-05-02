@@ -95,9 +95,9 @@ public class ResultsController {
 		RestTemplate restTemplate = new RestTemplate();
 		// TODO: Hay que configurar bien la url (ahora está a jierro)
 		@SuppressWarnings("unchecked")
-		List<ManagerResult> results = restTemplate.getForObject(urlGproResults + "/managers/results/" + season.getIdSeason() + "/" + race.getIdRace(), List.class);
+		List<ManagerResult> results = restTemplate.getForObject(urlGproResults + "managers/results/" + season.getIdSeason() + "/" + race.getIdRace(), List.class);
 		
-		modelAndView.addObject("gproresultsUrlUpdate", urlGproResults + "/managers/results");
+		modelAndView.addObject("gproresultsUrlUpdate", urlGproResults + "managers/results");
 		
         // Añadimos la lista de managers en función de la carrera actual
 		modelAndView.addObject("managersList", results);

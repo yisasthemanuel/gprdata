@@ -7,13 +7,13 @@
 <c:url var="vendorWidget" value="/js/vendor/jquery.ui.widget.js"/>
 <c:url var="jqueryIframe" value="/js/jquery.iframe-transport.js"/>
 <c:url var="jqueryFileupload" value="/js/jquery.fileupload.js"/>
+<c:url var="jQueryMinUrl" value="/js/jquery.min.js"/>
 
 <c:url var="uploadFile" value="/calendar/uploadingFile.html"/>
 
 <input id="fileupload" type="file" name="files[]" data-url="${uploadFile}" multiple>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-
+<script src="${jQueryMinUrl}"></script>
 <script src="${vendorWidget}"></script>
 <script src="${jqueryIframe}"></script>
 <script src="${jqueryFileupload}"></script>
