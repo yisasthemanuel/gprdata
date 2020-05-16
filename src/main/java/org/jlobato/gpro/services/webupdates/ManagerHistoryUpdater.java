@@ -8,6 +8,7 @@ import org.jlobato.gpro.dao.mybatis.facade.FachadaManager;
 import org.jlobato.gpro.dao.mybatis.facade.FachadaTyres;
 import org.jlobato.gpro.dao.mybatis.model.Category;
 import org.jlobato.gpro.dao.mybatis.model.Manager;
+import org.jlobato.gpro.dao.mybatis.model.TyreBrand;
 import org.jlobato.gpro.utils.GPROUtils;
 import org.jlobato.gpro.web.session.GPROWebSession;
 import org.jlobato.gpro.web.session.GPROWebSessionFactory;
@@ -19,8 +20,36 @@ import net.sf.ehcache.CacheManager;
 
 public class ManagerHistoryUpdater {
 	
+	public static void setManagerHistory(AbstractApplicationContext contexto, String codManager, int idSeason, String categoryCode, Integer group, int position, String tyre) {
+		FachadaCategory categoryService = contexto.getBean(FachadaCategory.class);
+		FachadaTyres tyresService = contexto.getBean(FachadaTyres.class);
+		FachadaManager managerService = contexto.getBean(FachadaManager.class);
+		
+		Manager manager = managerService.getManagerByCode(codManager);
+		Category category = categoryService.getCategoryByCode(categoryCode);
+		TyreBrand tyreBrand = tyresService.getTyreBrand(tyre);
+		
+		managerService.updateManagerHistory(
+				manager.getCodeManager(),
+				(short)idSeason,
+				category.getIdCategory(),
+				group != null ? group.shortValue(): null,
+				tyreBrand.getIdTyreBrand(),
+				(short)position,
+				null, //wins
+				null, //cup
+				null, //fastestLaps
+				null, //moneyBalance
+				null, //obr
+				null, //podiums
+				null, //points
+				null, //poles
+				null //races
+			);
+	}
+	
 	//TODO Esto debería ir en la capa de negocio
-	public static void updateManagerHistory(Manager manager, AbstractApplicationContext contexto, GPROWebSession session) {
+	public static void updateManagerHistory(Manager manager, AbstractApplicationContext contexto, GPROWebSession session, Short fromSeasonId) {
 		
 		FachadaCategory categoryService = contexto.getBean(FachadaCategory.class);
 		FachadaTyres tyresService = contexto.getBean(FachadaTyres.class);
@@ -29,51 +58,65 @@ public class ManagerHistoryUpdater {
 		List<ManagerHistoryXBean> history = session.getManagerHistory(manager.getIdGpro().toString());
 		
 		for (ManagerHistoryXBean season : history) {
-			Optional<String> optBrandCode = Optional.ofNullable(GPROUtils.getTyreBrandCode(season.getTyres()));
-			Short tyreBrand = optBrandCode.map((code) -> tyresService.getTyreBrand(code).getIdTyreBrand()).orElse(null);
-			
 			Short idSeason = GPROUtils.castIfNotNull(season.getSeason(), Short.class);
-			Optional<Category> optCategory = Optional.ofNullable(categoryService.getCategoryByCode(GPROUtils.getCategoryCode(season.getGroup())));
-			Short idCategory = optCategory.map((category) -> category.getIdCategory()).orElse(null); 
-			Short idGroup = GPROUtils.castIfNotNull(GPROUtils.getGroupId(season.getGroup()), Short.class);
-			Short position = GPROUtils.castIfNotNull(season.getPosition(), Short.class);
-			Short wins = GPROUtils.castIfNotNull(season.getWins(), Short.class);
-			String cup = season.getCup();
-			Short fastestLaps = GPROUtils.castIfNotNull(season.getFastestLaps(), Short.class);
-			Integer result = GPROUtils.getMoneyAsInt(season.getMoney());
-			Long moneyBalance = result == null ? null : new Long(result);
-			Short obr = GPROUtils.castIfNotNull(season.getObr(), Short.class);
-			Short podiums = GPROUtils.castIfNotNull(season.getPodiums(), Short.class);
-			Short points = GPROUtils.castIfNotNull(season.getPoints(), Short.class);
-			Short poles = GPROUtils.castIfNotNull(season.getPoles(), Short.class);
-			Short races = GPROUtils.castIfNotNull(season.getRaces(), Short.class);
-			
-			if (idSeason != null && idCategory != null) {
-				//managerService.addManagerHistory(manager.getCodeManager(),
-				managerService.updateManagerHistory(manager.getCodeManager(),
-						idSeason,
-						idCategory,
-						idGroup,
-						tyreBrand,
-						position,
-						wins,
-						cup,
-						fastestLaps,
-						moneyBalance,
-						obr,
-						podiums,
-						points,
-						poles,
-						races);
+			// Sí y sólo sí la temporada es la misma o posterior a la pasada como parámetro
+			if (idSeason != null && (idSeason.shortValue() >= fromSeasonId.shortValue())) {
+				Optional<String> optBrandCode = Optional.ofNullable(GPROUtils.getTyreBrandCode(season.getTyres()));
+				Short tyreBrand = optBrandCode.map(code -> tyresService.getTyreBrand(code).getIdTyreBrand()).orElse(null);
+				
+				Optional<Category> optCategory = Optional.ofNullable(categoryService.getCategoryByCode(GPROUtils.getCategoryCode(season.getGroup())));
+				Short idCategory = optCategory.map(category -> category.getIdCategory()).orElse(null); 
+				Short idGroup = GPROUtils.castIfNotNull(GPROUtils.getGroupId(season.getGroup()), Short.class);
+				Short position = GPROUtils.castIfNotNull(season.getPosition(), Short.class);
+				Short wins = GPROUtils.castIfNotNull(season.getWins(), Short.class);
+				String cup = season.getCup();
+				Short fastestLaps = GPROUtils.castIfNotNull(season.getFastestLaps(), Short.class);
+				Integer result = GPROUtils.getMoneyAsInt(season.getMoney());
+				Long moneyBalance = result == null ? null : Long.valueOf(result);
+				Short obr = GPROUtils.castIfNotNull(season.getObr(), Short.class);
+				Short podiums = GPROUtils.castIfNotNull(season.getPodiums(), Short.class);
+				Short points = GPROUtils.castIfNotNull(season.getPoints(), Short.class);
+				Short poles = GPROUtils.castIfNotNull(season.getPoles(), Short.class);
+				Short races = GPROUtils.castIfNotNull(season.getRaces(), Short.class);
+				
+//				if (idSeason != null && idCategory != null) {
+				if (idCategory != null) { // El idSeason ya ha sido comprobado antes
+					//managerService.addManagerHistory(manager.getCodeManager(),
+					managerService.updateManagerHistory(manager.getCodeManager(),
+							idSeason,
+							idCategory,
+							idGroup,
+							tyreBrand,
+							position,
+							wins,
+							cup,
+							fastestLaps,
+							moneyBalance,
+							obr,
+							podiums,
+							points,
+							poles,
+							races);
+				}
 			}
+			
 		}
 	}
 	
-	public static void main(String args[]) {
-		System.setProperty("entorno", "I");
-		//AbstractApplicationContext contexto = new FileSystemXmlApplicationContext("C:/Desarrollo/eclipse/ws/gpro/gprdata/src/main/webapp/WEB-INF/spring-applicationContext.xml");
-		//AbstractApplicationContext contexto = new FileSystemXmlApplicationContext("C:/Desarrollo/gpro/gprdata/src/main/webapp/WEB-INF/spring-applicationContext.xml");
-		AbstractApplicationContext contexto = new FileSystemXmlApplicationContext(args[0]);
+	public static void main(String[] args) {
+		System.setProperty("entorno", "L");
+		AbstractApplicationContext contexto = new FileSystemXmlApplicationContext(args[0]);		
+//		setManagerHistory(contexto, "NEVZA", 76, "E", null, 15, "CO");
+//		setManagerHistory(contexto, "EDWIN", 76, "E", null, 28, "BY");
+//		setManagerHistory(contexto, "CARLO", 76, "M", 1, 15, "YO");
+//		setManagerHistory(contexto, "ANIA", 76, "P", 1, 1, "YO");
+//		setManagerHistory(contexto, "MARK", 76, "P", 2, 18, "YO");
+//		setManagerHistory(contexto, "GEOFF", 76, "P", 3, 1, "YO");
+//		setManagerHistory(contexto, "PABLO", 76, "P", 14, 24, "YO");
+//		setManagerHistory(contexto, "MIKKO", 76, "P", 18, 3, "YO");
+//		setManagerHistory(contexto, "DIEGO", 76, "P", 23, 31, "BY");
+//		setManagerHistory(contexto, "JESUS", 76, "A", 82, 5, "PI");
+		
 		
 		GPROWebSession session = GPROWebSessionFactory.getGPROWebSession();
 		
@@ -86,7 +129,8 @@ public class ManagerHistoryUpdater {
 				updateManagerHistory(
 						manager,
 						contexto,
-						session
+						session,
+						Short.valueOf((short)75)
 					);
 			}
 		}

@@ -19,70 +19,28 @@
 	
 	<context:annotation-config />
 	
-<!--  
-	<bean id="http403EntryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint">
-	</bean>
--->
-	<!-- Imports the configurations of the different infrastructure systems of the application -->
-	<import resource="spring-database.xml" /> <!-- Data --> 
-	<import resource="spring-mvc.xml" /> <!-- MVC -->
-	<import resource="spring-security.xml" /> <!-- Security -->
-
-	<!-- Para que se hagan visibles propiedades del sistema en la configuración -->
-	<bean id="systemPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" />
-
 	<!--  Locale i18n -->
 	<bean id="messageSource"
 	    class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 	    <property name="basename" value="classpath:resources/messages" />
 	    <property name="defaultEncoding" value="UTF-8"/>
 	</bean>
-
-	<bean id="localeChangeInterceptor"
-	    class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-	    <property name="paramName" value="lang" />
-	</bean>
-
+	
 	<bean id="localeResolver"
 	    class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
 	    <property name="defaultLocale" value="en"/>
 	</bean>
 	
-	
-		
-	<!-- AUTENTICACIÓN -->
-	<!-- Creamos el delegado de negocio para la autenticación -->
-<!-- 	<bean id="authenticationDelegate" class="org.jlobato.gpro.services.authentication.AuthenticationDelegate"> -->
-<!-- 		<property name="authenticationServiceType" value="DUMMY"/> -->
-<!-- 	</bean> -->
+	<bean id="localeChangeInterceptor"
+	    class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+	    <property name="paramName" value="lang" />
+	</bean>
 
- 
-	<!-- Creamos el delegado de negocio para la lista de managers -->
-<!--
-	<bean id="managersDelegate" class="org.jlobato.gpro.services.manager.ManagersDelegate">
-		<property name="managerServiceType" value="MYBATIS"/>
-	</bean>
-	
-	<bean id="jdbcMyBatisService" class="org.jlobato.gpro.services.manager.JDBCMyBatisManagersService">
-	</bean>
--->
-	<!-- Creamos el delegado de negocio para los resultados de la copa -->
-<!--
-	<bean id="cupStandingsDelegate" class="org.jlobato.gpro.services.manager.CupStandingsDelegate">
-		<property name="serviceType" value="SIMPLE"/>
-	</bean>
--->
-	<!-- Creamos el lookup del servicio de autenticación -->	
-<!-- 	<bean id="businessLookup" class="org.jlobato.gpro.services.authentication.AuthenticationLookup"/> -->
+	<!-- Imports the configurations of the different infrastructure systems of the application -->
+	<import resource="spring-database.xml" /> <!-- Data --> 
+<!-- 	<import resource="spring-mvc.xml" /> MVC -->
+<!-- 	<import resource="spring-security.xml" /> Security -->
 
-	<!-- Creamos el lookup del servicio managers -->	
-<!--
-	<bean id="businessManagersLookup" class="org.jlobato.gpro.services.manager.ManagersLookup"/>
--->	
-	<!-- Creamos el lookup del servicio cup standings -->	
-<!--
-	<bean id="cupStandingsLookup" class="org.jlobato.gpro.services.manager.CupStandingsLookup">
-		<property name="serializationPath" value="${gprodata.root.gprdata}/cupLastStandings.ser"/>
-	</bean>
--->	
+	<!-- Para que se hagan visibles propiedades del sistema en la configuración -->
+	<bean id="systemPlaceholderConfigurer" class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
 </beans>

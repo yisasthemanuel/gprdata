@@ -4,7 +4,7 @@
 
 ```shell
 docker run -d -v C:\java\wars:/usr/local/tomcat/webapps -e entorno=I -p 8080:8080 --name yisas-tomcat --rm tomcat:9.0.30-jdk11-openjdk
-docker run -d -e entorno=I -p 8080:8080 --name yisas-gprdata --rm yisasthemanuel/gprdata
+docker run -d -e entorno=I -e DOCKER_TIMEZONE=Europe/Madrid -p 8080:8080 --name yisas-gprdata --rm yisasthemanuel/gprdata
 ```
 
 ** Banner generado con la fuente alligator2 (https://devops.datenkollektiv.de/banner.txt/index.html)
