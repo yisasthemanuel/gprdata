@@ -136,6 +136,10 @@ public class GprcupController {
         	modelAndView.addObject("lastSeason", standings.getIdSeason());
             logger.info("GprcupController.main - Clasificación correspondiente a la carrera: {}", standings.getIdRace());
         }
+        else {
+        	// Si no hay datos de la copa, se elimina el atributo
+        	session.removeAttribute("currentCupStandings");
+        }
         
         modelAndView.addObject("managersList", managers);
         modelAndView.addObject("racesList", fachadaSeason.getRaces(current));
