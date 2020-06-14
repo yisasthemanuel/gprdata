@@ -39,9 +39,6 @@ public class ResultsController {
 	@Value("${url.prefix.managers}")
 	private String hostGetManagers;
 	
-	@Value("${url.prefix.results}")
-	private String hostPutManagers;
-	
 	/**
 	 * 
 	 */
@@ -99,7 +96,7 @@ public class ResultsController {
 		@SuppressWarnings("unchecked")
 		List<ManagerResult> results = restTemplate.getForObject(hostGetManagers + "managers/results/" + season.getIdSeason() + "/" + race.getIdRace(), List.class);
 		
-		modelAndView.addObject("gproresultsUrlUpdate", hostPutManagers + "managers/results");
+		modelAndView.addObject("gproresultsUrlUpdate", hostGetManagers + "managers/results");
 		
         // Añadimos la lista de managers en función de la carrera actual
 		modelAndView.addObject("managersList", results);
