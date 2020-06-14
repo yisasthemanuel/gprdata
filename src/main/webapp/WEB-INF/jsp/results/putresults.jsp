@@ -131,8 +131,6 @@ $(document).ready(function() {
 		//Peticion PUT
 		$.ajax({
 		    type: "PUT",
-		    //url: "http://localhost:8080/gproapi/managers/results",
-		    //url: "http://localhost:9080/managers/results",
 		    url: "${gproresultsUrlUpdate}",
 		    contentType: "application/json",
 		    data: jsonString,
@@ -142,6 +140,7 @@ $(document).ready(function() {
 		    	$('#alert-error').hide();
 		    },
 		    error: function (xhr, textStatus, errorThrown) {
+		    	console.log(errorThrown);
 		    	$('#cargando').hide();
 		    	$('#alert-error').show();
 		    	$('#exito-critica-publico').hide();
