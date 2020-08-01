@@ -11,15 +11,28 @@ import org.jlobato.gpro.dao.mybatis.model.Manager;
 import org.jlobato.gpro.dao.mybatis.model.TyreBrand;
 import org.jlobato.gpro.utils.GPROUtils;
 import org.jlobato.gpro.web.session.GPROWebSession;
-import org.jlobato.gpro.web.session.GPROWebSessionFactory;
 import org.jlobato.gpro.web.xbean.ManagerHistoryXBean;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import net.sf.ehcache.CacheManager;
 
+/**
+ * The Class ManagerHistoryUpdater.
+ */
 public class ManagerHistoryUpdater {
 	
+	/**
+	 * Sets the manager history.
+	 *
+	 * @param contexto the contexto
+	 * @param codManager the cod manager
+	 * @param idSeason the id season
+	 * @param categoryCode the category code
+	 * @param group the group
+	 * @param position the position
+	 * @param tyre the tyre
+	 */
 	public static void setManagerHistory(AbstractApplicationContext contexto, String codManager, int idSeason, String categoryCode, Integer group, int position, String tyre) {
 		FachadaCategory categoryService = contexto.getBean(FachadaCategory.class);
 		FachadaTyres tyresService = contexto.getBean(FachadaTyres.class);
@@ -33,8 +46,8 @@ public class ManagerHistoryUpdater {
 				manager.getCodeManager(),
 				(short)idSeason,
 				category.getIdCategory(),
-				group != null ? group.shortValue(): null,
-				tyreBrand.getIdTyreBrand(),
+				group != null ? group.shortValue() : null,
+				tyreBrand != null ? tyreBrand.getIdTyreBrand() : null,
 				(short)position,
 				null, //wins
 				null, //cup
@@ -48,6 +61,14 @@ public class ManagerHistoryUpdater {
 			);
 	}
 	
+	/**
+	 * Update manager history.
+	 *
+	 * @param manager the manager
+	 * @param contexto the contexto
+	 * @param session the session
+	 * @param fromSeasonId the from season id
+	 */
 	//TODO Esto debería ir en la capa de negocio
 	public static void updateManagerHistory(Manager manager, AbstractApplicationContext contexto, GPROWebSession session, Short fromSeasonId) {
 		
@@ -103,39 +124,45 @@ public class ManagerHistoryUpdater {
 		}
 	}
 	
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
 		System.setProperty("entorno", "L");
-		AbstractApplicationContext contexto = new FileSystemXmlApplicationContext(args[0]);		
-//		setManagerHistory(contexto, "NEVZA", 76, "E", null, 15, "CO");
-//		setManagerHistory(contexto, "EDWIN", 76, "E", null, 28, "BY");
-//		setManagerHistory(contexto, "CARLO", 76, "M", 1, 15, "YO");
-//		setManagerHistory(contexto, "ANIA", 76, "P", 1, 1, "YO");
-//		setManagerHistory(contexto, "MARK", 76, "P", 2, 18, "YO");
-//		setManagerHistory(contexto, "GEOFF", 76, "P", 3, 1, "YO");
-//		setManagerHistory(contexto, "PABLO", 76, "P", 14, 24, "YO");
-//		setManagerHistory(contexto, "MIKKO", 76, "P", 18, 3, "YO");
-//		setManagerHistory(contexto, "DIEGO", 76, "P", 23, 31, "BY");
-//		setManagerHistory(contexto, "JESUS", 76, "A", 82, 5, "PI");
+		AbstractApplicationContext contexto = new FileSystemXmlApplicationContext(args[0]);
+		//manager, season, categoría, grupo, posición, neumáticos
+		//setManagerHistory(contexto, "NEVZA", 77, "E", null, 24, "CO");
+		setManagerHistory(contexto, "MIKKO", 77, "M", 1, 2, "MI");
+		//setManagerHistory(contexto, "EDWIN", 77, "M", 1, 17, "BY");
+		setManagerHistory(contexto, "CARLO", 77, "M", 1, 1, "BY");
+		//setManagerHistory(contexto, "ANIA", 77, "M", 3, 31, "DU");
+		//setManagerHistory(contexto, "GEOFF", 77, "M", 5, 35, "YO");
+		//setManagerHistory(contexto, "MARK", 77, "P", 2, 7, "DU");
+		//setManagerHistory(contexto, "DIEGO", 77, "P", 23, 10, "DU");
+		//setManagerHistory(contexto, "CHRIS", 77, "A", 27, 29, "PI");
+		//setManagerHistory(contexto, "JESUS", 77, "A", 82, 1, "PI");
 		
 		
-		GPROWebSession session = GPROWebSessionFactory.getGPROWebSession();
-		
-		FachadaManager managerService = contexto.getBean(FachadaManager.class);
-		
-		List<Manager> managers = managerService.getManagersList();
-		
-		for (Manager manager : managers) {
-			if (manager.getIdGpro() != null) {
-				updateManagerHistory(
-						manager,
-						contexto,
-						session,
-						Short.valueOf((short)75)
-					);
-			}
-		}
-		
-		session.logout();
+//		GPROWebSession session = GPROWebSessionFactory.getGPROWebSession();
+//		
+//		FachadaManager managerService = contexto.getBean(FachadaManager.class);
+//		
+//		List<Manager> managers = managerService.getManagersList();
+//		
+//		for (Manager manager : managers) {
+//			if (manager.getIdGpro() != null) {
+//				updateManagerHistory(
+//						manager,
+//						contexto,
+//						session,
+//						Short.valueOf((short)76)
+//					);
+//			}
+//		}
+//		
+//		session.logout();
 		
 		CacheManager.getInstance().shutdown();
 	}
