@@ -11,7 +11,7 @@
 <script>
 	function reloadSeason(urlAction) {
 		document.getElementById("theForm").action = urlAction;
-		document.getElementById("theForm").submit();	
+		document.getElementById("theForm").submit();
 	}
 </script>
 
@@ -36,7 +36,7 @@
 	
 	
 	<c:url var="seedingActionURL" value="${seedingAction}"/>	
-	<c:url var="statisticsActionURL" value="${statisticsAction}"/>	
+	<c:url var="statisticsActionURL" value="${statisticsAction}"/>
 		
 
 	<form method="post" name="theForm" id="theForm" action="${showStandingsAction}" id="formSaveStandings">

@@ -390,7 +390,7 @@ public class GprcupController {
 			@RequestParam(value=CURRENT_SEASON, required=false) String idSeason,
 			@RequestParam(value=CURRENT_RACE, required=false) String idRace) throws TemplateException {
 		logger.debug("GprcupController.exportSeeding - begin");
-        ModelAndView modelAndView = new ModelAndView();
+//        ModelAndView modelAndView = new ModelAndView();
         
         Season season = null;
         if (idSeason != null) {
@@ -408,10 +408,10 @@ public class GprcupController {
 		logger.debug("GprcupController.exportSeeding - RESULT - {}", result);
 		
 		
-        modelAndView.addObject(CURRENT_SEASON, season.getIdSeason());
-        if (idRace != null) {
-            modelAndView.addObject(CURRENT_RACE, idRace);
-        }
+//        modelAndView.addObject(CURRENT_SEASON, season.getIdSeason());
+//        if (idRace != null) {
+//            modelAndView.addObject(CURRENT_RACE, idRace);
+//        }
         
         //TODO Redirigir a una página genérica de download
         
@@ -427,8 +427,6 @@ public class GprcupController {
         }
         
 		logger.debug("GprcupController.exportSeeding - end");
-        
-        
 	}
 	
 	@GetMapping(value = "/statistics.html")
@@ -437,7 +435,7 @@ public class GprcupController {
 			@RequestParam(value=CURRENT_RACE, required=false) String idRace
 			) throws TemplateException {
 		logger.debug("GprcupController.exportStatistics - begin");
-        ModelAndView modelAndView = new ModelAndView();
+//        ModelAndView modelAndView = new ModelAndView();
         
         Season season = null;
         if (idSeason != null) {
@@ -452,10 +450,10 @@ public class GprcupController {
         String result = templateService.processTemplate("statistics.report.ftl", builder.build());
 		logger.debug("GprcupController.exportStatistics - RESULT - {}", result);
 		
-        modelAndView.addObject(CURRENT_SEASON, season.getIdSeason());
-        if (idRace != null) {
-        	modelAndView.addObject(CURRENT_RACE, idRace);
-        }
+//        modelAndView.addObject(CURRENT_SEASON, season.getIdSeason());
+//        if (idRace != null) {
+//        	modelAndView.addObject(CURRENT_RACE, idRace);
+//        }
         
         
         //TODO Redirigir a una página genérica de download
@@ -471,5 +469,43 @@ public class GprcupController {
         }
         
 		logger.debug("GprcupController.exportStatistics - end");
+	}
+	
+	@PostMapping(value = "/round.html")
+	public void exportCurrentStatus(
+			HttpServletRequest request,
+			HttpSession session,
+			HttpServletResponse response,
+			String screenshotURL) throws TemplateException {
+		logger.debug("GprcupController.exportStatistics - begin");
+		CupStandingsSnapshot cupStandings = getCupStandings(request, session);
+
+		//Id de la carrera. La jornada es el número de carrera menos dos
+		Short idRace = cupStandings.getIdRace();
+
+		//Id de la temporada.
+		Short idSeason = cupStandings.getIdSeason();
+
+		TemplateModelBuilder builder = TemplateModelBuilder.newInstance()
+				.add("round_no", cupService.getRoundFromRace(idRace, idSeason)) 
+				.add("edition_no", RomanNumeral.toRoman((idSeason - cupService.getSeasonForFirstEdition()) + 1))
+				.add("round_screenshot_url", (screenshotURL == null) ? "no url specified" : screenshotURL);
+
+		String result = templateService.processTemplate("round.ftl", builder.build());
+		logger.debug("GprcupController.exportCurrentStatus - RESULT - {}", result);
+
+		//TODO Redirigir a una página genérica de download
+		if (result != null) {
+			response.setContentType("text/plain");
+			response.addHeader("Content-Disposition", "attachment; filename=" + "round_post.txt");
+			try {
+				response.getWriter().write(result);
+			} catch (IOException e) {
+				//TODO - Tratar esto con una página de error
+				logger.error(e.getMessage(), e);
+			}
+		}
+
+		logger.debug("GprcupController.exportCurrentStatus - end");
 	}
 }

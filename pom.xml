@@ -185,7 +185,14 @@
 	    <groupId>com.fasterxml.jackson.core</groupId>
 	    <artifactId>jackson-annotations</artifactId>
 	    <version>${com.fasterxml.jackson.version}</version>
-	</dependency>	
+	</dependency>
+	
+	<!-- javamelody-core -->
+	<dependency>
+		<groupId>net.bull.javamelody</groupId>
+		<artifactId>javamelody-core</artifactId>
+		<version>${net.bull.javamelody.version}</version>
+	</dependency>
   </dependencies>
   
   <build>
@@ -274,7 +281,8 @@
     <maven.compiler.target>1.8</maven.compiler.target>
     <failOnMissingWebXml>false</failOnMissingWebXml>
 	<docker.image.prefix>yisasthemanuel</docker.image.prefix>
-	<spring-cloud.version>Hoxton.SR1</spring-cloud.version>		    
+	<spring-cloud.version>Hoxton.SR1</spring-cloud.version>		
+	<net.bull.javamelody.version>1.85.0</net.bull.javamelody.version>    
   </properties>
   
 <!-- Generar el informe de release  -->

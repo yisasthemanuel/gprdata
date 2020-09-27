@@ -133,16 +133,16 @@ public class ManagerHistoryUpdater {
 		System.setProperty("entorno", "L");
 		AbstractApplicationContext contexto = new FileSystemXmlApplicationContext(args[0]);
 		//manager, season, categoría, grupo, posición, neumáticos
-		//setManagerHistory(contexto, "NEVZA", 77, "E", null, 24, "CO");
-		setManagerHistory(contexto, "MIKKO", 77, "M", 1, 2, "MI");
-		//setManagerHistory(contexto, "EDWIN", 77, "M", 1, 17, "BY");
-		setManagerHistory(contexto, "CARLO", 77, "M", 1, 1, "BY");
-		//setManagerHistory(contexto, "ANIA", 77, "M", 3, 31, "DU");
-		//setManagerHistory(contexto, "GEOFF", 77, "M", 5, 35, "YO");
-		//setManagerHistory(contexto, "MARK", 77, "P", 2, 7, "DU");
-		//setManagerHistory(contexto, "DIEGO", 77, "P", 23, 10, "DU");
-		//setManagerHistory(contexto, "CHRIS", 77, "A", 27, 29, "PI");
-		//setManagerHistory(contexto, "JESUS", 77, "A", 82, 1, "PI");
+		setManagerHistory(contexto, "NEVZA", 78, "M", 1, 11, "BY");
+		setManagerHistory(contexto, "MIKKO", 78, "E", null, 26, "CO");
+		setManagerHistory(contexto, "EDWIN", 78, "M", 1, 25, "YO");
+		setManagerHistory(contexto, "CARLO", 78, "E", null, 36, "PI");
+		setManagerHistory(contexto, "ANIA", 78, "M", 3, 1, "BY");
+		setManagerHistory(contexto, "GEOFF", 78, "M", 5, 22, "YO");
+		setManagerHistory(contexto, "MARK", 78, "M", 2, 7, "DU");
+		setManagerHistory(contexto, "DIEGO", 78, "P", 23, 21, "DU");
+		setManagerHistory(contexto, "CHRIS", 78, "A", 27, 6, "PI");
+		setManagerHistory(contexto, "JESUS", 78, "A", 82, 1, "PI");
 		
 		
 //		GPROWebSession session = GPROWebSessionFactory.getGPROWebSession();
@@ -157,7 +157,7 @@ public class ManagerHistoryUpdater {
 //						manager,
 //						contexto,
 //						session,
-//						Short.valueOf((short)76)
+//						Short.valueOf((short)77)
 //					);
 //			}
 //		}

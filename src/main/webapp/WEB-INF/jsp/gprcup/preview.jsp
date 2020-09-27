@@ -166,6 +166,12 @@ CUP
 	<br>
 	<input type="submit" value="<spring:message code="label.copa.edit"/>">
 	
+	<c:set var="roundAction" scope="request" value="/gprcup/round.html?"/>
+	<c:set var="roundAction" scope="request" value="${roundAction}currentSeason=${currentCupStandings.idSeason}&currentRace=${currentCupStandings.idRace}"/>
+	<c:url var="roundActionURL" value="${roundAction}"/>
+	<input type="submit" value="<spring:message code="label.round"/>" formaction="${roundActionURL}">
+	<input name="screenshotURL" id="screenshotURL" size="50" maxlength="120" value="${screenshotURL}"/>
+	
 	</form>
 
 </body>  

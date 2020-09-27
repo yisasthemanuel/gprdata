@@ -85,7 +85,7 @@ public class GPROCalendarBrowserTest extends TestCase {
 		//Entorno desarrollo
 		System.setProperty("entorno", "L");
 		
-		String calendarFileName = "GPROCalS77.ics";
+		String calendarFileName = "GPROCalS78.ics";
 		
 		//Cargamos el contexto spring (el mismo contexto que la aplicación web)
 		//contexto = new FileSystemXmlApplicationContext(APPLICATION_CONTEXT);

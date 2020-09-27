@@ -44,6 +44,11 @@
     	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	
+	<!-- Javamelody listener -->
+	<listener>
+		<listener-class>net.bull.javamelody.SessionListener</listener-class>
+	</listener>	
+	
     <!-- Listener específico de la aplicación -->
 	<listener>
         <listener-class>org.jlobato.gpro.web.listener.GPRODataContextListener</listener-class>
@@ -79,6 +84,19 @@
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
+    
+    <!-- Filtros javamelody -->
+    <filter>
+		<filter-name>javamelody</filter-name>
+		<filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
+		<async-supported>true</async-supported>
+	</filter>
+	<filter-mapping>
+		<filter-name>javamelody</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>ASYNC</dispatcher>
+	</filter-mapping>
     
     <!-- Filtro de seguridad spring -->
 	<filter>
