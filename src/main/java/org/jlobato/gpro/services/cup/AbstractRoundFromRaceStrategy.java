@@ -20,5 +20,17 @@ public abstract class AbstractRoundFromRaceStrategy implements RoundFromRaceStra
 	public String getRoundFromRace(Short idRace, Short idSeason) {
 		return Integer.toString(idRace);
 	}
+	
+	
+	/**
+	 * Gets the round no.
+	 *
+	 * @param idRace the id race
+	 * @param idSeason the id season
+	 * @return the round no
+	 */
+	int getRoundNo(Short idRace, Short idSeason) {
+		return idRace - 2;
+	}
 
 }

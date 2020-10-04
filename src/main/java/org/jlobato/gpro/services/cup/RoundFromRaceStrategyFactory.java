@@ -1,5 +1,8 @@
 package org.jlobato.gpro.services.cup;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -10,6 +13,20 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class RoundFromRaceStrategyFactory {
+	
+	/** The Constant DEFAULT_STRATEGY_KEY. */
+	static final Integer DEFAULT_STRATEGY_KEY = Integer.valueOf(1);
+	
+	/** The Constant ROUND_POST_STRATEGY_KEY. */
+	static final Integer ROUND_POST_STRATEGY_KEY = Integer.valueOf(2);
+	
+	/** The strategies. */
+	private static Map<Integer, RoundFromRaceStrategy> strategies;	
+	static {
+		strategies = new HashMap<>();
+		strategies.put(DEFAULT_STRATEGY_KEY, new DefaultRoundFromRaceStrategy());
+		strategies.put(ROUND_POST_STRATEGY_KEY, new FormattedRoundFromRaceStrategy());
+	}
 		
 	/** The default strategy. */
 	@Autowired
@@ -18,6 +35,7 @@ public class RoundFromRaceStrategyFactory {
 	
 	/** The current strategy. */
 	private RoundFromRaceStrategy currentStrategy;
+	
 	
 	/**
 	 * Creates the.
@@ -30,6 +48,16 @@ public class RoundFromRaceStrategyFactory {
 		}
 		
 		return this.currentStrategy;
+	}
+	
+	/**
+	 * Creates the.
+	 *
+	 * @param impl the impl
+	 * @return the round from race strategy
+	 */
+	public RoundFromRaceStrategy create(int impl) {
+		return strategies.get(impl);
 	}
 
 	/**
@@ -66,6 +94,5 @@ public class RoundFromRaceStrategyFactory {
 	 */
 	public void setCurrentStrategy(RoundFromRaceStrategy currentStrategy) {
 		this.currentStrategy = currentStrategy;
-	}
-
+	}	
 }

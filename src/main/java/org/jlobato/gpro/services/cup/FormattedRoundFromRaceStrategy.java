@@ -1,14 +1,15 @@
 package org.jlobato.gpro.services.cup;
 
-import org.springframework.stereotype.Component;
+import java.text.DecimalFormat;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class DefaultRoundFromRaceStrategy.
+ * The Class FormattedRoundFromRaceStrategy.
  */
-@Component(AbstractRoundFromRaceStrategy.DEFAULT_STRATEGY)
-public class DefaultRoundFromRaceStrategy extends AbstractRoundFromRaceStrategy {
+public class FormattedRoundFromRaceStrategy extends AbstractRoundFromRaceStrategy {
 	
+	/** The Constant df. */
+	private static final DecimalFormat df = new DecimalFormat("#00");
 
 	/**
 	 * Gets the round from race.
@@ -20,6 +21,8 @@ public class DefaultRoundFromRaceStrategy extends AbstractRoundFromRaceStrategy 
 	@Override
 	public String getRoundFromRace(Short idRace, Short idSeason) {
 		int result = getRoundNo(idRace, idSeason);
-		return (result == 13) ? "12 + 1" : Integer.toString(result);		
+		return (result == 13) ? "12_1" : df.format(result);
 	}
+
+
 }

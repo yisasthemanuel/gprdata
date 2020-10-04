@@ -69,6 +69,17 @@ public class GPROCupService {
 	 * @return the round from race
 	 */
 	public String getRoundFromRace(Short idRace, Short idSeason) {
-		return roundFromFraceStrategyFactory.create().getRoundFromRace(idRace, idSeason);
+		return roundFromFraceStrategyFactory.create(RoundFromRaceStrategyFactory.DEFAULT_STRATEGY_KEY).getRoundFromRace(idRace, idSeason);
+	}
+	
+	/**
+	 * Gets the round for post from race.
+	 *
+	 * @param idRace the id race
+	 * @param idSeason the id season
+	 * @return the round for post from race
+	 */
+	public String getRoundForPostFromRace(Short idRace, Short idSeason) {
+		return roundFromFraceStrategyFactory.create(RoundFromRaceStrategyFactory.ROUND_POST_STRATEGY_KEY).getRoundFromRace(idRace, idSeason);
 	}
 }

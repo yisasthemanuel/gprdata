@@ -33,57 +33,54 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * 
- * @author jlobato
+ * The Class GprcupController.
  *
+ * @author jlobato
  */
 @Controller
 @RequestMapping("/gprcup")
 public class GprcupController {
 	
 	
+	/** The Constant CURRENT_CUP_STANDINGS. */
+	private static final String CURRENT_CUP_STANDINGS = "currentCupStandings";
+
+	/** The Constant CURRENT_SEASON. */
 	private static final String CURRENT_SEASON = "currentSeason";
 
+	/** The Constant CURRENT_RACE. */
 	private static final String CURRENT_RACE = "currentRace";
 
-	/**
-	 * 
-	 */
+	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(GprcupController.class);
 	
+	/** The template service. */
 	@Autowired
 	private TemplateService templateService;
 	
-	/**
-	 * 
-	 */
+	/** The fachada season. */
 	@Autowired
 	private FachadaSeason fachadaSeason;
 	
 
-	/**
-	 * 
-	 */
+	/** The fachada manager. */
 	@Autowired
 	private FachadaManager fachadaManager;
 	
-	/**
-	 * 
-	 */
+	/** The fachada cup. */
 	@Autowired
 	private FachadaGPRCup fachadaCup;
 	
-	/**
-	 * 
-	 */
+	/** The cup service. */
 	@Autowired
 	private GPROCupService cupService;
 
 	/**
-	 * 
-	 * @param request
-	 * @param session
-	 * @return
+	 * Cup.
+	 *
+	 * @param request the request
+	 * @param session the session
+	 * @return the model and view
 	 */
 	@GetMapping(value = "/gprcup.html")
 	public ModelAndView cup(HttpServletRequest request, HttpSession session)	{
@@ -100,10 +97,12 @@ public class GprcupController {
 	}
 	
 	/**
-	 * 
-	 * @param request
-	 * @param session
-	 * @return
+	 * Main.
+	 *
+	 * @param request the request
+	 * @param currentSeason the current season
+	 * @param session the session
+	 * @return the model and view
 	 */
 	@RequestMapping(value = "/main.html", method = {RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView main(HttpServletRequest request,
@@ -120,7 +119,7 @@ public class GprcupController {
         
         Season current = null;
         if (currentSeason != null) {
-        	current = fachadaSeason.getSeason(new Integer(currentSeason));
+        	current = fachadaSeason.getSeason(Integer.valueOf(currentSeason));
         } else {
             current = fachadaSeason.getCurrentSeason();
         }
@@ -131,14 +130,14 @@ public class GprcupController {
         CupStandingsSnapshot standings = fachadaCup.getStandings(current, team);
         
         if (standings != null) {
-        	session.setAttribute("currentCupStandings", standings);
+        	session.setAttribute(CURRENT_CUP_STANDINGS, standings);
         	modelAndView.addObject("lastRace", standings.getIdRace());
         	modelAndView.addObject("lastSeason", standings.getIdSeason());
             logger.info("GprcupController.main - Clasificación correspondiente a la carrera: {}", standings.getIdRace());
         }
         else {
         	// Si no hay datos de la copa, se elimina el atributo
-        	session.removeAttribute("currentCupStandings");
+        	session.removeAttribute(CURRENT_CUP_STANDINGS);
         }
         
         modelAndView.addObject("managersList", managers);
@@ -154,10 +153,11 @@ public class GprcupController {
 	}
 	
 	/**
-	 * 
-	 * @param request
-	 * @param session
-	 * @return
+	 * Show standings.
+	 *
+	 * @param request the request
+	 * @param session the session
+	 * @return the model and view
 	 */
 	@PostMapping(value = "/showStandings.html")
 	public ModelAndView showStandings(HttpServletRequest request, HttpSession session) {
@@ -166,10 +166,10 @@ public class GprcupController {
         ModelAndView modelAndView = new ModelAndView();
         
         //Creamos el objeto CupStandings
-        CupStandingsSnapshot cupStandings = getCupStandings(request, session);
+        CupStandingsSnapshot cupStandings = getCupStandings(request);
               
         //Colocamos en sesión la clasificación actual
-        session.setAttribute("currentCupStandings", cupStandings);
+        session.setAttribute(CURRENT_CUP_STANDINGS, cupStandings);
         
         //Colocamos los objetos managers
         modelAndView.addObject("QF01", fachadaManager.getManager(cupStandings.getIdManagerQf1()));
@@ -200,11 +200,12 @@ public class GprcupController {
 	}
 
 	/**
-	 * 
-	 * @param request
-	 * @param cupStandings
+	 * Gets the cup standings.
+	 *
+	 * @param request the request
+	 * @return the cup standings
 	 */
-	private CupStandingsSnapshot getCupStandings(HttpServletRequest request, HttpSession session) {
+	private CupStandingsSnapshot getCupStandings(HttpServletRequest request) {
 		CupStandingsSnapshot result = new CupStandingsSnapshot();
 		
 		//Managers
@@ -334,12 +335,12 @@ public class GprcupController {
         result.setIdManagerWinner(getManagerID(fmanagerWinner));
         
         //Recuperamos la carrera para la que se guarda la clasificación
-        Race theRace = fachadaSeason.getRace(new Short(request.getParameter(CURRENT_RACE)));
+        Race theRace = fachadaSeason.getRace(Short.valueOf(request.getParameter(CURRENT_RACE)));
         if (theRace != null) {
             result.setIdRace(theRace.getIdRace());
         }
         
-        result.setIdSeason(new Short(request.getParameter(CURRENT_SEASON)));
+        result.setIdSeason(Short.valueOf(request.getParameter(CURRENT_SEASON)));
         
         //Tomamos equipo por defecto. Esto en un futuro será el equipo asignado al usuario
         result.setIdTeam(fachadaCup.getDefaultTeam().getIdTeam());
@@ -347,10 +348,16 @@ public class GprcupController {
         return result;
 	}
 	
+	/**
+	 * Gets the manager ID.
+	 *
+	 * @param id the id
+	 * @return the manager ID
+	 */
 	private Short getManagerID(String id) {
 		Short result = null;
 		try {
-			result = new Short(id);
+			result = Short.valueOf(id);
 		} catch(Exception e) {
 			// Do nothing
 		}
@@ -358,17 +365,18 @@ public class GprcupController {
 	}
 
 	/**
-	 * 
-	 * @param request
-	 * @param session
-	 * @return
+	 * Save standings.
+	 *
+	 * @param request the request
+	 * @param session the session
+	 * @return the model and view
 	 */
 	@PostMapping(value = "/saveStandings.html")
 	public ModelAndView saveStandings(HttpServletRequest request, HttpSession session) {
 		logger.debug("GprcupController.saveStandings - begin");
 		
         //Creamos el objeto CupStandings
-        CupStandingsSnapshot cupStandings = getCupStandings(request, session);
+        CupStandingsSnapshot cupStandings = getCupStandings(request);
         
         //Le decimos que lo guarde
         fachadaCup.saveStandings(cupStandings);
@@ -385,16 +393,24 @@ public class GprcupController {
 		return modelAndView;
 	}
 	
+	/**
+	 * Export seeding.
+	 *
+	 * @param request the request
+	 * @param response the response
+	 * @param idSeason the id season
+	 * @param idRace the id race
+	 * @throws TemplateException the template exception
+	 */
 	@GetMapping(value = "/seeding.html")
 	public void exportSeeding(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value=CURRENT_SEASON, required=false) String idSeason,
 			@RequestParam(value=CURRENT_RACE, required=false) String idRace) throws TemplateException {
 		logger.debug("GprcupController.exportSeeding - begin");
-//        ModelAndView modelAndView = new ModelAndView();
         
         Season season = null;
         if (idSeason != null) {
-        	season = fachadaSeason.getSeason(new Integer(idSeason));
+        	season = fachadaSeason.getSeason(Integer.valueOf(idSeason));
         } else {
         	season = fachadaSeason.getCurrentSeason();
         }
@@ -408,11 +424,6 @@ public class GprcupController {
 		logger.debug("GprcupController.exportSeeding - RESULT - {}", result);
 		
 		
-//        modelAndView.addObject(CURRENT_SEASON, season.getIdSeason());
-//        if (idRace != null) {
-//            modelAndView.addObject(CURRENT_RACE, idRace);
-//        }
-        
         //TODO Redirigir a una página genérica de download
         
         if (result != null) {
@@ -429,13 +440,21 @@ public class GprcupController {
 		logger.debug("GprcupController.exportSeeding - end");
 	}
 	
+	/**
+	 * Export statistics.
+	 *
+	 * @param request the request
+	 * @param response the response
+	 * @param idSeason the id season
+	 * @param idRace the id race
+	 * @throws TemplateException the template exception
+	 */
 	@GetMapping(value = "/statistics.html")
 	public void exportStatistics(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value=CURRENT_SEASON, required=false) String idSeason,
 			@RequestParam(value=CURRENT_RACE, required=false) String idRace
 			) throws TemplateException {
 		logger.debug("GprcupController.exportStatistics - begin");
-//        ModelAndView modelAndView = new ModelAndView();
         
         Season season = null;
         if (idSeason != null) {
@@ -450,11 +469,6 @@ public class GprcupController {
         String result = templateService.processTemplate("statistics.report.ftl", builder.build());
 		logger.debug("GprcupController.exportStatistics - RESULT - {}", result);
 		
-//        modelAndView.addObject(CURRENT_SEASON, season.getIdSeason());
-//        if (idRace != null) {
-//        	modelAndView.addObject(CURRENT_RACE, idRace);
-//        }
-        
         
         //TODO Redirigir a una página genérica de download
         if (result != null) {
@@ -471,6 +485,15 @@ public class GprcupController {
 		logger.debug("GprcupController.exportStatistics - end");
 	}
 	
+	/**
+	 * Export current status.
+	 *
+	 * @param request the request
+	 * @param session the session
+	 * @param response the response
+	 * @param screenshotURL the screenshot URL
+	 * @throws TemplateException the template exception
+	 */
 	@PostMapping(value = "/round.html")
 	public void exportCurrentStatus(
 			HttpServletRequest request,
@@ -478,13 +501,14 @@ public class GprcupController {
 			HttpServletResponse response,
 			String screenshotURL) throws TemplateException {
 		logger.debug("GprcupController.exportStatistics - begin");
-		CupStandingsSnapshot cupStandings = getCupStandings(request, session);
+		CupStandingsSnapshot cupStandings = getCupStandings(request);
 
 		//Id de la carrera. La jornada es el número de carrera menos dos
 		Short idRace = cupStandings.getIdRace();
 
 		//Id de la temporada.
 		Short idSeason = cupStandings.getIdSeason();
+		
 
 		TemplateModelBuilder builder = TemplateModelBuilder.newInstance()
 				.add("round_no", cupService.getRoundFromRace(idRace, idSeason)) 
@@ -497,7 +521,7 @@ public class GprcupController {
 		//TODO Redirigir a una página genérica de download
 		if (result != null) {
 			response.setContentType("text/plain");
-			response.addHeader("Content-Disposition", "attachment; filename=" + "round_post.txt");
+			response.addHeader("Content-Disposition", "attachment; filename=" + "round_post_" + cupService.getRoundForPostFromRace(idRace, idSeason) + ".txt");
 			try {
 				response.getWriter().write(result);
 			} catch (IOException e) {

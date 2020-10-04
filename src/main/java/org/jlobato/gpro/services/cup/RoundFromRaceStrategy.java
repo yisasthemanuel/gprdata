@@ -13,5 +13,5 @@ public interface RoundFromRaceStrategy {
 	 * @param idSeason the id season
 	 * @return the round from race
 	 */
-	public String getRoundFromRace(Short idRace, Short idSeason);
+	public String getRoundFromRace(Short idRace, Short idSeason);	
 }

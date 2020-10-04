@@ -4,7 +4,7 @@
   <groupId>org.jlobato.gpro</groupId>
   <artifactId>gprdata</artifactId>
   <packaging>war</packaging>
-  <version>1.4.0.RELEASE</version>
+  <version>1.4.1.RELEASE</version>
   <name>GPRO Data Webapp</name>
   <url>http://gprodata.yisasthemanuel.org</url>
   <dependencies>
@@ -244,6 +244,10 @@
 	           			<goals>
 	             			<goal>build</goal>
 	           			</goals>
+	           			<configuration>
+	          	   			<imageName>${docker.image.prefix}/${project.artifactId}:${project.version}</imageName>
+	          	   			<tag>${project.version}</tag>
+	           			</configuration>
 	         		</execution>
 	         		<execution>
 	           			<id>push-image</id>
@@ -253,6 +257,7 @@
 	           			</goals>
 	           			<configuration>
 	          	   			<imageName>${docker.image.prefix}/${project.artifactId}:${project.version}</imageName>
+	          	   			<tag>${project.version}</tag>
 	           			</configuration>
 	         		</execution>
 	       		</executions>
