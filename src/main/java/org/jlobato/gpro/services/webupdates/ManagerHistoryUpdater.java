@@ -9,8 +9,10 @@ import org.jlobato.gpro.dao.mybatis.facade.FachadaTyres;
 import org.jlobato.gpro.dao.mybatis.model.Category;
 import org.jlobato.gpro.dao.mybatis.model.Manager;
 import org.jlobato.gpro.dao.mybatis.model.TyreBrand;
+import org.jlobato.gpro.services.manager.ManagerServices;
 import org.jlobato.gpro.utils.GPROUtils;
 import org.jlobato.gpro.web.session.GPROWebSession;
+import org.jlobato.gpro.web.session.GPROWebSessionFactory;
 import org.jlobato.gpro.web.xbean.ManagerHistoryXBean;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
@@ -22,6 +24,14 @@ import net.sf.ehcache.CacheManager;
  */
 public class ManagerHistoryUpdater {
 	
+	
+	/**
+	 * Instantiates a new manager history updater.
+	 */
+	private ManagerHistoryUpdater() {
+		super();
+	}
+
 	/**
 	 * Sets the manager history.
 	 *
@@ -132,37 +142,37 @@ public class ManagerHistoryUpdater {
 	public static void main(String[] args) {
 		System.setProperty("entorno", "L");
 		AbstractApplicationContext contexto = new FileSystemXmlApplicationContext(args[0]);
+		
+		GPROWebSession session = GPROWebSessionFactory.getGPROWebSession();
+		
+		FachadaManager managerService = contexto.getBean(FachadaManager.class);
+		
+		List<Manager> managers = managerService.getManagersList();
+		
+		for (Manager manager : managers) {
+			if (manager.getIdGpro() != null) {
+				updateManagerHistory(
+						manager,
+						contexto,
+						session,
+						Short.valueOf((short)78)
+					);
+			}
+		}
+		
 		//manager, season, categoría, grupo, posición, neumáticos
-		setManagerHistory(contexto, "NEVZA", 78, "M", 1, 11, "BY");
-		setManagerHistory(contexto, "MIKKO", 78, "E", null, 26, "CO");
-		setManagerHistory(contexto, "EDWIN", 78, "M", 1, 25, "YO");
-		setManagerHistory(contexto, "CARLO", 78, "E", null, 36, "PI");
-		setManagerHistory(contexto, "ANIA", 78, "M", 3, 1, "BY");
-		setManagerHistory(contexto, "GEOFF", 78, "M", 5, 22, "YO");
-		setManagerHistory(contexto, "MARK", 78, "M", 2, 7, "DU");
-		setManagerHistory(contexto, "DIEGO", 78, "P", 23, 21, "DU");
-		setManagerHistory(contexto, "CHRIS", 78, "A", 27, 6, "PI");
-		setManagerHistory(contexto, "JESUS", 78, "A", 82, 1, "PI");
+		setManagerHistory(contexto, ManagerServices.ANIA_MANAGER_CODE, 79, "E", null, 1, null);
+		setManagerHistory(contexto, ManagerServices.MIKKO_MANAGER_CODE, 79, "E", null, 36, null);
+		setManagerHistory(contexto, ManagerServices.MARK_MANAGER_CODE, 79, "M", 2, 11, null);
+		setManagerHistory(contexto, ManagerServices.CARLO_MANAGER_CODE, 79, "M", 4, 19, null);
+		setManagerHistory(contexto, ManagerServices.GEOFF_MANAGER_CODE, 79, "M", 5, 25, null);
+		setManagerHistory(contexto, ManagerServices.CHRIS_MANAGER_CODE, 79, "P", 2, 9, null);
+		setManagerHistory(contexto, ManagerServices.EDWIN_MANAGER_CODE, 79, "P", 7, 34, null);
+		setManagerHistory(contexto, ManagerServices.NEVZA_MANAGER_CODE, 79, "P", 20, 36, null);
+		setManagerHistory(contexto, ManagerServices.DIEGO_MANAGER_CODE, 79, "A", 58, 26, "PI");
+		setManagerHistory(contexto, ManagerServices.JESUS_MANAGER_CODE, 79, "A", 82, 2, "PI");
 		
-		
-//		GPROWebSession session = GPROWebSessionFactory.getGPROWebSession();
-//		
-//		FachadaManager managerService = contexto.getBean(FachadaManager.class);
-//		
-//		List<Manager> managers = managerService.getManagersList();
-//		
-//		for (Manager manager : managers) {
-//			if (manager.getIdGpro() != null) {
-//				updateManagerHistory(
-//						manager,
-//						contexto,
-//						session,
-//						Short.valueOf((short)77)
-//					);
-//			}
-//		}
-//		
-//		session.logout();
+		session.logout();
 		
 		CacheManager.getInstance().shutdown();
 	}

@@ -1,6 +1,6 @@
 FROM tomcat:9.0.30-jdk11-openjdk
 
-MAINTAINER yisasthemanuel@gmail.com
+LABEL maintainer="yisasthemanuel@gmail.com"
 
 ENV CATALINA_HOME /usr/local/tomcat
 

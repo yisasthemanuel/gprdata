@@ -13,20 +13,53 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
 /**
- * 
- * @author JLOBATO
+ * The Class ManagerServices.
  *
+ * @author JLOBATO
  */
 @Component
 public class ManagerServices {
 	
-	private static final transient Logger logger = LoggerFactory.getLogger(ManagerServices.class);
+	/** The Constant logger. */
+	private static final Logger logger = LoggerFactory.getLogger(ManagerServices.class);
 	
+	/** The manager DAO. */
 	@Autowired
 	FachadaManager managerDAO;
+
+	/** The Constant MARK_MANAGER_CODE. */
+	public static final String MARK_MANAGER_CODE = "MARK";
+	
+	/** The Constant CARLO_MANAGER_CODE. */
+	public static final String CARLO_MANAGER_CODE = "CARLO";
+	
+	/** The Constant GEOFF_MANAGER_CODE. */
+	public static final String GEOFF_MANAGER_CODE = "GEOFF";
+	
+	/** The Constant CHRIS_MANAGER_CODE. */
+	public static final String CHRIS_MANAGER_CODE = "CHRIS";
+	
+	/** The Constant EDWIN_MANAGER_CODE. */
+	public static final String EDWIN_MANAGER_CODE = "EDWIN";
+	
+	/** The Constant NEVZA_MANAGER_CODE. */
+	public static final String NEVZA_MANAGER_CODE = "NEVZA";
+	
+	/** The Constant DIEGO_MANAGER_CODE. */
+	public static final String DIEGO_MANAGER_CODE = "DIEGO";
+	
+	/** The Constant JESUS_MANAGER_CODE. */
+	public static final String JESUS_MANAGER_CODE = "JESUS";
+	
+	/** The Constant ANIA_MANAGER_CODE. */
+	public static final String ANIA_MANAGER_CODE = "ANIA";
+	
+	/** The Constant MIKKO_MANAGER_CODE. */
+	public static final String MIKKO_MANAGER_CODE = "MIKKO";
 	
 	/**
-	 * 
+	 * The main method.
+	 *
 	 * @param args Manager code and local path of new avatar
 	 */
 	public static void main(String args[]) {
