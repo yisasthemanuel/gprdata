@@ -17,72 +17,113 @@ function reloadSeason(urlAction) {
 	document.getElementById("theForm").action = urlAction;
 	document.getElementById("theForm").submit();	
 }
+
+function calculaSeasonRace(urlAction, sentido) {
+	var race = document.getElementById("currentRace").value;
+	var season = document.getElementById("currentSeason").value;
+	
+	var raceNumber = parseInt(race);
+	var seasonNumber = parseInt(season);
+	
+	if (sentido == 'previo') {
+		raceNumber -= 1; 
+		if (raceNumber == 0) {
+			raceNumber = 17;
+			seasonNumber -= 1;
+		}
+	}
+	else {
+		raceNumber += 1;
+		if (raceNumber == 18) {
+			raceNumber = 1;
+			seasonNumber += 1;
+		}
+	}
+	
+	urlAction = urlAction + "?currentSeason=" + seasonNumber + "&currentRace=" + raceNumber;
+	document.location.replace(urlAction);
+}
 </script>
 
 <c:url var="reloadAction" value="/results/results.html"/>
-  
-<form class="form-group" name="theForm" id="theForm">
-	
-	<div id="cabecera">
-		<!-- Season combo -->
-		<div id="currentSeasonContainer"> 
+
+<form name="theForm" id="theForm">
+	<!-- Season combo -->
+	<div class="form-row">
+		<div id="currentSeasonContainer" class="form-group"> 
 			<label for="currentSeason"><spring:message code="label.season"/>:</label>
-			<select class="form-control form-control-sm" name="currentSeason" id="currentSeason" onchange="reloadSeason('${reloadAction}')">
+			<select class="form-control" name="currentSeason" id="currentSeason" onchange="reloadSeason('${reloadAction}')">
 				<c:forEach items="${seasonList}" var="season" varStatus="status">
 					<option value="${season.idSeason}" ${currentSeasonID eq season.idSeason ? 'selected' : ''}>${season.nameSeason}</option>
 				</c:forEach>
 			</select>
 		</div>
-		<!-- Races combo -->
-		<div id="currentRaceContainer">
+	</div>
+	
+	<!-- Races combo -->
+	<div class="form-row">
+		<div id="currentRaceContainer" class="form-group col-md-10">
 			<label for="currentRace"><spring:message code="label.race"/>:</label>
-			<select class="form-control form-control-sm" name="currentRace" id="currentRace" onchange="reloadSeason('${reloadAction}')">
+			<select class="form-control" name="currentRace" id="currentRace" onchange="reloadSeason('${reloadAction}')">
 				<c:forEach items="${racesList}" var="race" varStatus="status">
 					<option value="${race.idRace}" ${currentRaceID eq race.idRace ? 'selected' : ''}>Season ${race.idSeason}, Race ${race.idRace}</option>
 				</c:forEach>
 			</select>
 		</div>
-	</div>
-</form>		
-	<div id="results">
-		<div id="exito-critica-publico" class="alert alert-success" role="alert" style="display:none"><spring:message code="label.result.success"/></div>
-		<div id="alert-error" class="alert alert-danger" role="alert" style="display:none"><spring:message code="label.result.error"/></div>
-		
-		<div class="table-responsive">
-		<table class="table table-sm table-hover table-borderless">
-			<thead>
-				<tr>
-					<th scope="col"><spring:message code="label.table.manager"/></th>
-					<th scope="col"><spring:message code="label.table.raceposition"/></th>
-					<th scope="col"><spring:message code="label.table.gridposition"/></th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach items="${managersList}" var="manager" varStatus="status">
-				<tr>
-					<td>
-					<div id="manager">
-						<input type="text" value="${manager.codeManager}" id="manager" name="manager" maxlength="5" size="10" disabled></input>
-					</div>
-					</td>
-					<td>
-					<div id="racePosition">
-						<input type="text" value="${manager.racePosition}" id="racePosition" name="racePosition" maxlength="5" size="10"></input>
-					</div>
-					</td>
-					<td>
-					<div id="gridPosition">
-						<input type="text" value="${manager.gridPosition}" id="gridPosition" name="gridPosition" maxlength="5" size="10"></input>
-					</div>
-					</td>
-				</tr>
-				</c:forEach>
-			</tbody>
-		</table>
+		<div class="form-group col-md-2">
+			<ul class="pager">
+	 				<li><a href="javascript:calculaSeasonRace('${reloadAction}', 'previo')"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a></li>
+	 				<li><a href="javascript:calculaSeasonRace('${reloadAction}', 'siguiente')"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a></li>
+			</ul>
 		</div>
 	</div>
+	<!-- Salto para que salga la tabla abajo -->
+	<div class="form-row">
+		<div class="form-group"> 
+			<label>&nbsp</label>
+		</div>
+	</div>
+</form>
 	
-	<button type="button" id="putresults" class="btn btn-primary"><spring:message code="label.result.update"/></button>
+<div id="results">
+	<div id="exito-critica-publico" class="alert alert-success" role="alert" style="display:none"><spring:message code="label.result.success"/></div>
+	<div id="alert-error" class="alert alert-danger" role="alert" style="display:none"><spring:message code="label.result.error"/></div>
+	
+	<div class="table-responsive">
+	<table class="table table-sm table-hover table-borderless">
+		<thead>
+			<tr>
+				<th scope="col"><spring:message code="label.table.manager"/></th>
+				<th scope="col"><spring:message code="label.table.raceposition"/></th>
+				<th scope="col"><spring:message code="label.table.gridposition"/></th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach items="${managersList}" var="manager" varStatus="status">
+			<tr>
+				<td>
+				<div id="manager">
+					<input type="text" value="${manager.codeManager}" id="manager" name="manager" maxlength="5" size="10" disabled></input>
+				</div>
+				</td>
+				<td>
+				<div id="racePosition">
+					<input type="text" value="${manager.racePosition}" id="racePosition" name="racePosition" maxlength="5" size="10"></input>
+				</div>
+				</td>
+				<td>
+				<div id="gridPosition">
+					<input type="text" value="${manager.gridPosition}" id="gridPosition" name="gridPosition" maxlength="5" size="10"></input>
+				</div>
+				</td>
+			</tr>
+			</c:forEach>
+		</tbody>
+	</table>
+	</div>
+</div>
+	
+<button type="button" id="putresults" class="btn btn-primary"><spring:message code="label.result.update"/></button>
 	
 <script type="text/javascript">
 

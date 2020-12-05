@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <decorators defaultdir="/decorators">
+	<excludes>
+		<pattern>/tyres/preview.html</pattern>
+	</excludes>
+
 	<decorator name="gprcup" page="gprcup-theme.jsp">
    		<pattern>/gprcup/*</pattern>
 	</decorator>

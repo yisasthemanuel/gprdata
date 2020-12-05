@@ -193,6 +193,14 @@
 		<artifactId>javamelody-core</artifactId>
 		<version>${net.bull.javamelody.version}</version>
 	</dependency>
+	
+	<!-- BBCode -->
+	<dependency>
+		<groupId>com.inversoft</groupId>
+		<artifactId>prime-transformer</artifactId>
+		<version>2.1.4</version>
+	</dependency>
+
   </dependencies>
   
   <build>
