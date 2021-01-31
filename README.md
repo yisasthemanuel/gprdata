@@ -1,10 +1,10 @@
-# README
+# GPRDATA
+=========================
 
 ## Ejecución de la imagen
 
 ```shell
-docker run -d -v C:\java\wars:/usr/local/tomcat/webapps -e entorno=I -p 8080:8080 --name yisas-tomcat --rm tomcat:9.0.30-jdk11-openjdk
-docker run -d -e entorno=I -e DOCKER_TIMEZONE=Europe/Madrid -p 8080:8080 --name yisas-gprdata --rm yisasthemanuel/gprdata
+docker run -d -e entorno=I -e DOCKER_TIMEZONE=Europe/Madrid -p 8080:8080 --name yisas-gprdata --rm yisasthemanuel/gprdata:1.4.2.RELEASE
 ```
 
 ** Banner generado con la fuente alligator2 (https://devops.datenkollektiv.de/banner.txt/index.html)
@@ -97,6 +97,6 @@ docker run -d -p 1234:8080 -e CONFIG_SERVER=http://192.168.0.38:8888 -e SPRING_P
 
 * [Building a RESTful Web Service with Spring Boot Actuator](https://spring.io/guides/gs/actuator-service/)
 
-### Todos
+## TODOs
 
 * Hay que quitar algunas dependencias que obligan a que el contexto de la aplicación se llame gprdata

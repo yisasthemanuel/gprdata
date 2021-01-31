@@ -143,6 +143,8 @@ public class ManagerHistoryUpdater {
 		System.setProperty("entorno", "L");
 		AbstractApplicationContext contexto = new FileSystemXmlApplicationContext(args[0]);
 		
+		Short idSeason = Short.valueOf(args[1]); 
+		
 		GPROWebSession session = GPROWebSessionFactory.getGPROWebSession();
 		
 		FachadaManager managerService = contexto.getBean(FachadaManager.class);
@@ -155,22 +157,26 @@ public class ManagerHistoryUpdater {
 						manager,
 						contexto,
 						session,
-						Short.valueOf((short)78)
+						idSeason
 					);
 			}
 		}
 		
+		int nextSeason = idSeason.shortValue() + 1;
+		
 		//manager, season, categoría, grupo, posición, neumáticos
-		setManagerHistory(contexto, ManagerServices.ANIA_MANAGER_CODE, 79, "E", null, 1, null);
-		setManagerHistory(contexto, ManagerServices.MIKKO_MANAGER_CODE, 79, "E", null, 36, null);
-		setManagerHistory(contexto, ManagerServices.MARK_MANAGER_CODE, 79, "M", 2, 11, null);
-		setManagerHistory(contexto, ManagerServices.CARLO_MANAGER_CODE, 79, "M", 4, 19, null);
-		setManagerHistory(contexto, ManagerServices.GEOFF_MANAGER_CODE, 79, "M", 5, 25, null);
-		setManagerHistory(contexto, ManagerServices.CHRIS_MANAGER_CODE, 79, "P", 2, 9, null);
-		setManagerHistory(contexto, ManagerServices.EDWIN_MANAGER_CODE, 79, "P", 7, 34, null);
-		setManagerHistory(contexto, ManagerServices.NEVZA_MANAGER_CODE, 79, "P", 20, 36, null);
-		setManagerHistory(contexto, ManagerServices.DIEGO_MANAGER_CODE, 79, "A", 58, 26, "PI");
-		setManagerHistory(contexto, ManagerServices.JESUS_MANAGER_CODE, 79, "A", 82, 2, "PI");
+		setManagerHistory(contexto, ManagerServices.EDWIN_MANAGER_CODE, nextSeason, "M", 2, 2, "HA");
+		setManagerHistory(contexto, ManagerServices.MARK_MANAGER_CODE, nextSeason, "M", 2, 11, "BY");
+		
+		setManagerHistory(contexto, ManagerServices.MIKKO_MANAGER_CODE, nextSeason, "M", 5, 3, "HA");
+		setManagerHistory(contexto, ManagerServices.GEOFF_MANAGER_CODE, nextSeason, "M", 5, 9, "DU");
+		
+		setManagerHistory(contexto, ManagerServices.ANIA_MANAGER_CODE, nextSeason, "E", null, 22, "BY");
+		setManagerHistory(contexto, ManagerServices.CARLO_MANAGER_CODE, nextSeason, "M", 4, 1, "HA");
+		setManagerHistory(contexto, ManagerServices.CHRIS_MANAGER_CODE, nextSeason, "P", 2, 5, "YO");
+		setManagerHistory(contexto, ManagerServices.DIEGO_MANAGER_CODE, nextSeason, "A", 58, 8, "PI");
+		setManagerHistory(contexto, ManagerServices.JESUS_MANAGER_CODE, nextSeason, "A", 82, 19, "PI");
+		setManagerHistory(contexto, ManagerServices.NEVZA_MANAGER_CODE, nextSeason, "A", 83, 20, "PI");
 		
 		session.logout();
 		

@@ -85,7 +85,7 @@ public class GPROCalendarBrowserTest extends TestCase {
 		//Entorno desarrollo
 		System.setProperty("entorno", "L");
 		
-		String calendarFileName = "GPROCalS79.ics";
+		String calendarFileName = "GPROCalS80.ics";
 		
 		//Cargamos el contexto spring (el mismo contexto que la aplicación web)
 		//contexto = new FileSystemXmlApplicationContext(APPLICATION_CONTEXT);
@@ -118,11 +118,17 @@ public class GPROCalendarBrowserTest extends TestCase {
 	 */
 	public void test() {
 		CalendarBuilder builder = new CalendarBuilder();
+		int seasonId = 0;
+		
+		int racesCount = 0;
+		
+		//Nueva temporada
+		int seasonNumber = -1;
+		
 		try {
 			Calendar calendar = builder.build(is);
 			
-			//Nueva temporada
-			int seasonNumber = -1;
+
 			
 			//Lista de carreras
 			ArrayList<Race> races = new ArrayList<Race>();
@@ -241,10 +247,16 @@ public class GPROCalendarBrowserTest extends TestCase {
 			//Actualizamos la temporada con lo que nos encontramos en el calendario importado
 			fSeason.updateSeasonCalendar(currentSeason, races);
 			
+			racesCount = fSeason.getRaces(currentSeason).size();
+			seasonId = fSeason.getSeason(seasonNumber).getIdSeason();
+			
 		} catch (IOException e) {
 			logger.error("IOException", e);
 		} catch (ParserException e) {
 			logger.error("ParserException", e);
 		}
+		
+		assertEquals(seasonId, seasonNumber);
+		assertEquals(17, racesCount);
 	}
 }

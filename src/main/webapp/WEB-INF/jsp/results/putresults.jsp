@@ -94,6 +94,7 @@ function calculaSeasonRace(urlAction, sentido) {
 		<thead>
 			<tr>
 				<th scope="col"><spring:message code="label.table.manager"/></th>
+				<th scope="col"><spring:message code="label.table.group"/></th>
 				<th scope="col"><spring:message code="label.table.raceposition"/></th>
 				<th scope="col"><spring:message code="label.table.gridposition"/></th>
 			</tr>
@@ -105,6 +106,7 @@ function calculaSeasonRace(urlAction, sentido) {
 				<div id="manager">
 					<input type="text" value="${manager.codeManager}" id="manager" name="manager" maxlength="5" size="10" disabled></input>
 				</div>
+				<td><a href="${urls[status.index]}" target="_blank">${history[status.index]}</a>
 				</td>
 				<td>
 				<div id="racePosition">

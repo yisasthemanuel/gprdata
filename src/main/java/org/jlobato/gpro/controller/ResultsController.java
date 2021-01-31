@@ -1,11 +1,17 @@
 package org.jlobato.gpro.controller;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.beanutils.PropertyUtils;
+import org.jlobato.gpro.dao.mybatis.facade.FachadaCategory;
+import org.jlobato.gpro.dao.mybatis.facade.FachadaManager;
 import org.jlobato.gpro.dao.mybatis.facade.FachadaSeason;
+import org.jlobato.gpro.dao.mybatis.model.ManagerHistory;
 import org.jlobato.gpro.dao.mybatis.model.ManagerResult;
 import org.jlobato.gpro.dao.mybatis.model.Race;
 import org.jlobato.gpro.dao.mybatis.model.Season;
@@ -20,31 +26,50 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * 
- * @author JLOBATO
+ * The Class ResultsController.
  *
+ * @author JLOBATO
  */
 @Controller
 @RequestMapping("/results")
 public class ResultsController {
 	
-	/**
-	 * 
-	 */
+	/** Lo que en un futuro será un cliente a un microservicio. */
 	@Autowired
 	private FachadaSeason fachadaSeason;
 	
+	/** Lo que en un futuro será un cliente a un microservicio. */
+	@Autowired
+	private FachadaManager fachadaManager;
+	
+	
+	/** Lo que en un futuro será un cliente a un microservicio. */
+	@Autowired
+	private FachadaCategory fachadaCategory;
+	
+	/** The host get managers. */
 	@Value("${url.prefix.managers}")
 	private String hostGetManagers;
 	
-	/**
-	 * 
-	 */
+	/** The host GPRO. */
+	@Value("${gpro.web.url}")
+	private String hostGPRO;
+	
+	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(ResultsController.class);
 	
 
+	/**
+	 * Allraces.
+	 *
+	 * @param request the request
+	 * @param session the session
+	 * @param codSeason the cod season
+	 * @return the string
+	 */
 	@GetMapping(value = "/allraces", produces = "application/json")
 	public @ResponseBody String allraces(HttpServletRequest request, HttpSession session, String codSeason)	{
 		logger.debug("ResultsController.getSeasonRaces - begin for season {}", request.getParameter("codSeason"));
@@ -54,15 +79,16 @@ public class ResultsController {
 	}
 	
 	/**
-	 * 
-	 * @param request
-	 * @param session
-	 * @return
+	 * Gets the results.
+	 *
+	 * @param currentSeason the current season
+	 * @param currentRace the current race
+	 * @return the results
 	 */
 	@GetMapping(value = "/results")
 	public ModelAndView getResults(
 			@RequestParam(value="currentSeason", required=false) String currentSeason,
-			@RequestParam(value="currentRace", required=false) String currentRace)	{
+			@RequestParam(value="currentRace", required=false) String currentRace) {
 		
 		// TODO: Meter equipo por defecto 
 		
@@ -96,22 +122,64 @@ public class ResultsController {
 		@SuppressWarnings("unchecked")
 		List<ManagerResult> results = restTemplate.getForObject(hostGetManagers + "managers/results/" + season.getIdSeason() + "/" + race.getIdRace(), List.class);
 		
+		// Se incluye el salto para actualizar los resultados
 		modelAndView.addObject("gproresultsUrlUpdate", hostGetManagers + "managers/results");
 		
-        // Añadimos la lista de managers en función de la carrera actual
-		modelAndView.addObject("managersList", results);
+		// Se añade la información sobre el grupo al que pertenece cada manager y se genera el correspondiente enlace
+		List<String> history = new ArrayList<>(); 
+		List<String> urls = new ArrayList<>();
+		if (results != null) {
+			final Short seasonId = season.getIdSeason();
+			
+			for (int i = 0; i < results.size(); i++) {
+				String code;
+				try {
+					code = PropertyUtils.getProperty(results.get(i), "codeManager").toString();
+					populateGroupName(
+							fachadaManager.getManagerHistory(fachadaManager.getManagerByCode(code).getIdManager(), seasonId),
+							history,
+							urls);
+				} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+					logger.error("Error getting code manager from list");
+				}
+			}
+
+			// Añadimos la lista de managers en función de la carrera actual
+			modelAndView.addObject("managersList", results);
+			modelAndView.addObject("history", history);
+			modelAndView.addObject("urls", urls);
+		}
 		
 		
         // Combo de temporadas
         modelAndView.addObject("seasonList", fachadaSeason.getAvailableSeasons());
         // Combo de carreras
         modelAndView.addObject("racesList", fachadaSeason.getRaces(season));
-        
-        
 		//Vista
 		modelAndView.setViewName("/results/putresults");
 		
 		return modelAndView;
 	}
-
+	
+	/**
+	 * Populate group name.
+	 *
+	 * @param managerHistory the manager history
+	 * @param history the history
+	 * @param urls the urls
+	 */
+	private void populateGroupName(List<ManagerHistory> managerHistory, List<String> history, List<String> urls) {
+		managerHistory.forEach(hist -> {
+			String category = "";
+			if (hist.getIdGroup() == null) {
+				category = fachadaCategory.getCategory(hist.getIdCategory()).getDescriptionCategory();
+			}
+			else {
+				category = fachadaCategory.getCategory(hist.getIdCategory()).getDescriptionCategory() + " - " + hist.getIdGroup().toString(); 
+			}
+			UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.hostGPRO).pathSegment("Standings.asp").queryParam("Group", category);
+			history.add(category);
+			urls.add(builder.toUriString());
+		});
+	}
 }

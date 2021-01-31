@@ -12,10 +12,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * The Class TyresController.
+ */
 @Controller
 @RequestMapping("/tyres")
 public class TyresController {
 	
+	/**
+	 * Main tyres.
+	 *
+	 * @return the model and view
+	 */
 	@GetMapping(value = "/tyres")
 	public ModelAndView mainTyres() {
 		ModelAndView modelAndView = new ModelAndView();
@@ -23,6 +31,12 @@ public class TyresController {
 		return modelAndView;
 	}
 	
+	/**
+	 * Welcome as HTML.
+	 *
+	 * @param text the text
+	 * @return the string
+	 */
 	@PostMapping(value = "/preview", produces = MediaType.TEXT_HTML_VALUE)
 	@ResponseBody
     public String welcomeAsHTML(String text) {
