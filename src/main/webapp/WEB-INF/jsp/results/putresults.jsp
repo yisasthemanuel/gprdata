@@ -95,6 +95,7 @@ function calculaSeasonRace(urlAction, sentido) {
 			<tr>
 				<th scope="col"><spring:message code="label.table.manager"/></th>
 				<th scope="col"><spring:message code="label.table.group"/></th>
+				<th scope="col"><spring:message code="label.table.groupposition"/></th>
 				<th scope="col"><spring:message code="label.table.raceposition"/></th>
 				<th scope="col"><spring:message code="label.table.gridposition"/></th>
 			</tr>
@@ -109,13 +110,36 @@ function calculaSeasonRace(urlAction, sentido) {
 				<td><a href="${urls[status.index]}" target="_blank">${history[status.index]}</a>
 				</td>
 				<td>
+				<div id="groupPosition">
+					<select class="form-control" name="groupPosition" id="groupPosition" onchange="reloadSeason('${reloadAction}')">
+ 						<c:forEach items="${positionList}" var="position" varStatus="positionStatus">
+							<option value="${position}" ${currentPositions[status.index] eq position ? 'selected' : ''}>${position}</option>
+ 						</c:forEach>
+					</select>
+				</div>
+				</td>
+				<td>
 				<div id="racePosition">
-					<input type="text" value="${manager.racePosition}" id="racePosition" name="racePosition" maxlength="5" size="10"></input>
+<%-- 					<input type="text" value="${manager.racePosition}" id="racePosition" name="racePosition" maxlength="5" size="10"></input> --%>
+					<select class="form-control" name="racePosition" id="racePosition">
+ 						<c:forEach items="${racePositionList}" var="racePosition" varStatus="racePositionStatus">
+							<option value="${racePosition.value}" ${manager.racePosition eq racePosition.value ? 'selected' : ''}>
+								<spring:message code="${racePosition.description}" arguments="${racePositionStatus.index}"/>
+							</option>
+ 						</c:forEach>
+					</select>
 				</div>
 				</td>
 				<td>
 				<div id="gridPosition">
-					<input type="text" value="${manager.gridPosition}" id="gridPosition" name="gridPosition" maxlength="5" size="10"></input>
+<%-- 					<input type="text" value="${manager.gridPosition}" id="gridPosition" name="gridPosition" maxlength="5" size="10"></input> --%>
+					<select class="form-control" name="gridPosition" id="gridPosition">
+ 						<c:forEach items="${gridPositionList}" var="gridPosition" varStatus="gridPositionStatus">
+							<option value="${gridPosition.value}" ${manager.gridPosition eq gridPosition.value ? 'selected' : ''}>
+								<spring:message code="${gridPosition.description}" arguments="${gridPositionStatus.index}"/>
+							</option>
+ 						</c:forEach>
+					</select>
 				</div>
 				</td>
 			</tr>
@@ -148,17 +172,31 @@ $(document).ready(function() {
 		
 		var racPositions = [];
 		$("div[id=racePosition]").each(function() {
-			$(this).find("input[id=racePosition]").each(function() {
+			$(this).find("select[id=racePosition]").each(function() {
 				racPositions.push($(this).val());
 			});
 		});
 		
 		var griPositions = [];
 		$("div[id=gridPosition]").each(function() {
-			$(this).find("input[id=gridPosition]").each(function() {
+			$(this).find("select[id=gridPosition]").each(function() {
 				griPositions.push($(this).val());
 			});
 		});
+		
+// 		var racPositionsSelect = [];
+// 		$("div[id=racePosition]").each(function() {
+// 			$(this).find("select[id=currentRacePosition]").each(function() {
+// 				racPositionsSelect.push($(this).val());
+// 			});
+// 		});
+		
+// 		var gridPositionsSelect = [];
+// 		$("div[id=gridPosition]").each(function() {
+// 			$(this).find("select[id=currentGridPosition]").each(function() {
+// 				gridPositionsSelect.push($(this).val());
+// 			});
+// 		});
 		
 		var results = [];
 		for (var indice in codManagers) {

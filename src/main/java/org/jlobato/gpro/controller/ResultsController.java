@@ -15,6 +15,7 @@ import org.jlobato.gpro.dao.mybatis.model.ManagerHistory;
 import org.jlobato.gpro.dao.mybatis.model.ManagerResult;
 import org.jlobato.gpro.dao.mybatis.model.Race;
 import org.jlobato.gpro.dao.mybatis.model.Season;
+import org.jlobato.gpro.data.DropdownModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,15 @@ public class ResultsController {
 	/** The host GPRO. */
 	@Value("${gpro.web.url}")
 	private String hostGPRO;
+	
+	@Autowired
+	private List<String> positionList;
+	
+	@Autowired
+	private List<DropdownModel> racePositionList;
+	
+	@Autowired
+	private List<DropdownModel> gridPositionList;
 	
 	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(ResultsController.class);
@@ -128,6 +138,7 @@ public class ResultsController {
 		// Se añade la información sobre el grupo al que pertenece cada manager y se genera el correspondiente enlace
 		List<String> history = new ArrayList<>(); 
 		List<String> urls = new ArrayList<>();
+		List<String> positions = new ArrayList<>();
 		if (results != null) {
 			final Short seasonId = season.getIdSeason();
 			
@@ -138,7 +149,8 @@ public class ResultsController {
 					populateGroupName(
 							fachadaManager.getManagerHistory(fachadaManager.getManagerByCode(code).getIdManager(), seasonId),
 							history,
-							urls);
+							urls,
+							positions);
 				} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
 					logger.error("Error getting code manager from list");
 				}
@@ -148,6 +160,10 @@ public class ResultsController {
 			modelAndView.addObject("managersList", results);
 			modelAndView.addObject("history", history);
 			modelAndView.addObject("urls", urls);
+			modelAndView.addObject("currentPositions", positions);
+			modelAndView.addObject("positionList", positionList);
+			modelAndView.addObject("racePositionList", racePositionList);
+			modelAndView.addObject("gridPositionList", gridPositionList);
 		}
 		
 		
@@ -167,8 +183,9 @@ public class ResultsController {
 	 * @param managerHistory the manager history
 	 * @param history the history
 	 * @param urls the urls
+	 * @param positions 
 	 */
-	private void populateGroupName(List<ManagerHistory> managerHistory, List<String> history, List<String> urls) {
+	private void populateGroupName(List<ManagerHistory> managerHistory, List<String> history, List<String> urls, List<String> positions) {
 		managerHistory.forEach(hist -> {
 			String category = "";
 			if (hist.getIdGroup() == null) {
@@ -177,9 +194,12 @@ public class ResultsController {
 			else {
 				category = fachadaCategory.getCategory(hist.getIdCategory()).getDescriptionCategory() + " - " + hist.getIdGroup().toString(); 
 			}
-			UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.hostGPRO).pathSegment("Standings.asp").queryParam("Group", category);
 			history.add(category);
+			
+			UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.hostGPRO).pathSegment("Standings.asp").queryParam("Group", category);
 			urls.add(builder.toUriString());
+			
+			positions.add(Short.toString(hist.getPosition()));
 		});
 	}
 }
