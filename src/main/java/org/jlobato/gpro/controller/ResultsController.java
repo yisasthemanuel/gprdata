@@ -70,7 +70,6 @@ public class ResultsController {
 	
 	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(ResultsController.class);
-	
 
 	/**
 	 * Allraces.

@@ -43,6 +43,26 @@ function calculaSeasonRace(urlAction, sentido) {
 	urlAction = urlAction + "?currentSeason=" + seasonNumber + "&currentRace=" + raceNumber;
 	document.location.replace(urlAction);
 }
+
+function updatePosition(codeSeason, codeManager, combo) {
+	//Peticion PUT
+	$.ajax({
+	    type: "PUT",
+	    url: "http://localhost:9080/managers/update-position/" + codeSeason + "/" + codeManager + "?position=" + combo.value,
+	    success: function (data, textStatus, xhr) {
+	    	$('#cargando').hide();
+	    	$('#exito-critica-publico').show();
+	    	$('#alert-error').hide();
+	    },
+	    error: function (xhr, textStatus, errorThrown) {
+	    	console.log(errorThrown);
+	    	$('#cargando').hide();
+	    	$('#alert-error').show();
+	    	$('#exito-critica-publico').hide();
+	    }
+	});
+	
+}
 </script>
 
 <c:url var="reloadAction" value="/results/results.html"/>
@@ -111,7 +131,7 @@ function calculaSeasonRace(urlAction, sentido) {
 				</td>
 				<td>
 				<div id="groupPosition">
-					<select class="form-control" name="groupPosition" id="groupPosition" onchange="reloadSeason('${reloadAction}')">
+					<select class="form-control" name="groupPosition" id="groupPosition" onchange="updatePosition(document.getElementById('currentSeason').value, '${manager.codeManager}', this)">
  						<c:forEach items="${positionList}" var="position" varStatus="positionStatus">
 							<option value="${position}" ${currentPositions[status.index] eq position ? 'selected' : ''}>${position}</option>
  						</c:forEach>
