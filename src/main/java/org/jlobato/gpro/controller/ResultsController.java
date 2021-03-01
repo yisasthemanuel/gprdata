@@ -51,9 +51,12 @@ public class ResultsController {
 	@Autowired
 	private FachadaCategory fachadaCategory;
 	
+	@Value("${url.prefix.categories.microservice}")
+	private String hostCategoriesMicroservice;
+	
 	/** The host get managers. */
 	@Value("${url.prefix.managers}")
-	private String hostGetManagers;
+	private String hostManagerMicroservice;
 	
 	/** The host GPRO. */
 	@Value("${gpro.web.url}")
@@ -129,10 +132,10 @@ public class ResultsController {
 		// Añadimos la llamada al microservicio
 		RestTemplate restTemplate = new RestTemplate();
 		@SuppressWarnings("unchecked")
-		List<ManagerResult> results = restTemplate.getForObject(hostGetManagers + "managers/results/" + season.getIdSeason() + "/" + race.getIdRace(), List.class);
+		List<ManagerResult> results = restTemplate.getForObject(hostManagerMicroservice + "managers/results/" + season.getIdSeason() + "/" + race.getIdRace(), List.class);
 		
 		// Se incluye el salto para actualizar los resultados
-		modelAndView.addObject("gproresultsUrlUpdate", hostGetManagers + "managers/results");
+		modelAndView.addObject("gproresultsUrlUpdate", hostManagerMicroservice + "managers/results");
 		
 		// Se añade la información sobre el grupo al que pertenece cada manager y se genera el correspondiente enlace
 		List<String> history = new ArrayList<>(); 
@@ -173,6 +176,8 @@ public class ResultsController {
 		//Vista
 		modelAndView.setViewName("/results/putresults");
 		
+		
+		
 		return modelAndView;
 	}
 	
@@ -185,9 +190,27 @@ public class ResultsController {
 	 * @param positions 
 	 */
 	private void populateGroupName(List<ManagerHistory> managerHistory, List<String> history, List<String> urls, List<String> positions) {
+		
 		managerHistory.forEach(hist -> {
 			String category = "";
 			if (hist.getIdGroup() == null) {
+				UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.hostCategoriesMicroservice).pathSegment("categories").pathSegment(Short.toString(hist.getIdCategory()));
+				String endpoint = builder.toUriString();
+				RestTemplate restTemplate = new RestTemplate();
+				Object result = restTemplate.getForObject(endpoint, Object.class);
+				try {
+					String desc = PropertyUtils.getProperty(result, "descriptionCategory").toString();
+					logger.info("Description category " + desc);
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				category = fachadaCategory.getCategory(hist.getIdCategory()).getDescriptionCategory();
 			}
 			else {
