@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
  * @author JLOBATO
  *
  */
-@SuppressWarnings("deprecation")
 public class GPRODataContextListener implements ServletContextListener {
 	
 	/**

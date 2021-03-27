@@ -194,26 +194,11 @@ public class ResultsController {
 		managerHistory.forEach(hist -> {
 			String category = "";
 			if (hist.getIdGroup() == null) {
-				UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.hostCategoriesMicroservice).pathSegment("categories").pathSegment(Short.toString(hist.getIdCategory()));
-				String endpoint = builder.toUriString();
-				RestTemplate restTemplate = new RestTemplate();
-				Object result = restTemplate.getForObject(endpoint, Object.class);
-				try {
-					String desc = PropertyUtils.getProperty(result, "descriptionCategory").toString();
-					logger.info("Description category " + desc);
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NoSuchMethodException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				//Aquí se llamaría a getManagerHistory
 				category = fachadaCategory.getCategory(hist.getIdCategory()).getDescriptionCategory();
 			}
 			else {
+				//Aquí se llamaría a getManagerHistory
 				category = fachadaCategory.getCategory(hist.getIdCategory()).getDescriptionCategory() + " - " + hist.getIdGroup().toString(); 
 			}
 			history.add(category);
@@ -223,5 +208,23 @@ public class ResultsController {
 			
 			positions.add(Short.toString(hist.getPosition()));
 		});
+	}
+
+	/**
+	 * 
+	 * @param hist
+	 */
+	@SuppressWarnings("unused")
+	private void getManagerHistoryInfo(ManagerHistory hist) {
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.hostCategoriesMicroservice).pathSegment("categories").pathSegment(Short.toString(hist.getIdCategory()));
+		String endpoint = builder.toUriString();
+		RestTemplate restTemplate = new RestTemplate();
+		Object result = restTemplate.getForObject(endpoint, Object.class);
+		try {
+			String desc = PropertyUtils.getProperty(result, "descriptionCategory").toString();
+			logger.info("Description category {}", desc);
+		} catch (Exception e) {
+			logger.error(e.getClass().getName() + " - " + e.getMessage(), e);
+		}
 	}
 }
