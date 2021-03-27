@@ -154,30 +154,32 @@ public class ManagerHistoryUpdater {
 		
 		for (Manager manager : managers) {
 			if (manager.getIdGpro() != null) {
-//				updateManagerHistory(
-//						manager,
-//						contexto,
-//						session,
-//						idSeason
-//					);
+				updateManagerHistory(
+						manager,
+						contexto,
+						session,
+						idSeason
+					);
 			}
 		}
 		
 		int nextSeason = idSeason.shortValue() + 1;
 		
 		//manager, season, categoría, grupo, posición, neumáticos
-		setManagerHistory(contexto, ManagerServices.EDWIN_MANAGER_CODE, nextSeason, "M", 2, 5, "HA");
-		setManagerHistory(contexto, ManagerServices.MARK_MANAGER_CODE, nextSeason, "M", 2, 3, "BY");
-		
-//		setManagerHistory(contexto, ManagerServices.MIKKO_MANAGER_CODE, nextSeason, "M", 5, 3, "HA");
-//		setManagerHistory(contexto, ManagerServices.GEOFF_MANAGER_CODE, nextSeason, "M", 5, 9, "DU");
+//		setManagerHistory(contexto, ManagerServices.CARLO_MANAGER_CODE, nextSeason, "E", null, 22, "HA");
+//		setManagerHistory(contexto, ManagerServices.ANIA_MANAGER_CODE, nextSeason, "E", null, 24, "HA");
 //		
-//		setManagerHistory(contexto, ManagerServices.ANIA_MANAGER_CODE, nextSeason, "E", null, 22, "BY");
-//		setManagerHistory(contexto, ManagerServices.CARLO_MANAGER_CODE, nextSeason, "M", 4, 1, "HA");
-//		setManagerHistory(contexto, ManagerServices.CHRIS_MANAGER_CODE, nextSeason, "P", 2, 5, "YO");
-//		setManagerHistory(contexto, ManagerServices.DIEGO_MANAGER_CODE, nextSeason, "A", 58, 8, "PI");
-//		setManagerHistory(contexto, ManagerServices.JESUS_MANAGER_CODE, nextSeason, "A", 82, 19, "PI");
-//		setManagerHistory(contexto, ManagerServices.NEVZA_MANAGER_CODE, nextSeason, "A", 83, 20, "PI");
+		setManagerHistory(contexto, ManagerServices.EDWIN_MANAGER_CODE, nextSeason, "M", 2, 31, "DU");
+		setManagerHistory(contexto, ManagerServices.MARK_MANAGER_CODE, nextSeason, "M", 2, 21, "BY");
+//		
+//		setManagerHistory(contexto, ManagerServices.CHRIS_MANAGER_CODE, nextSeason, "M", 5, 7, "YO");
+//		setManagerHistory(contexto, ManagerServices.GEOFF_MANAGER_CODE, nextSeason, "M", 5, 19, "BY");
+//		
+//		setManagerHistory(contexto, ManagerServices.MIKKO_MANAGER_CODE, nextSeason, "P", 10, 39, "CO");
+//		
+//		setManagerHistory(contexto, ManagerServices.DIEGO_MANAGER_CODE, nextSeason, "A", 58, 15, "PI");
+//		setManagerHistory(contexto, ManagerServices.JESUS_MANAGER_CODE, nextSeason, "A", 82, 1, "PI");
+//		setManagerHistory(contexto, ManagerServices.NEVZA_MANAGER_CODE, nextSeason, "A", 83, 9, "PI");
 		
 		session.logout();
 		
