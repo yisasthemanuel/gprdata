@@ -2,9 +2,13 @@ package org.jlobato.gpro.test.calendar;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.jlobato.gpro.dao.mybatis.facade.FachadaSeason;
@@ -27,56 +31,47 @@ import net.fortuna.ical4j.model.Component;
 import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.property.DtStart;
 
+// TODO: Auto-generated Javadoc
 /**
- * 
- * @author JLOBATO
+ * The Class GPROCalendarBrowserTest.
  *
+ * @author JLOBATO
  */
 public class GPROCalendarBrowserTest extends TestCase {
 	
-	/**
-	 * 
-	 */
+	/** The Constant APPLICATION_CONTEXT. */
 	//private static final String APPLICATION_CONTEXT = "C:/Desarrollo/gpro-dev/gpro/gprdata/src/main/webapp/WEB-INF/spring-applicationContext.xml";
 	private static final String APPLICATION_CONTEXT = "/spring-context/spring-applicationContext.xml";
 
-	/**
-	 * 
-	 */
+	/** The Constant RACE_UID_DELIMITER. */
 	private static final String RACE_UID_DELIMITER = "R";
 
-	/**
-	 * 
-	 */
+	/** The Constant GPROSDS_SDS_PREFIX. */
 	private static final String GPROSDS_SDS_PREFIX = "GPROSDS";
 	
+	/** The Constant GPROSDS_RAC_PREFIX. */
 	private static final String GPROSDS_RAC_PREFIX = "GPROS";
 
-	/**
-	 * 
-	 */
+	/** The Constant AT. */
 	private static final String AT = "at";
 
-	/**
-	 * 
-	 */
+	/** The Constant RACE. */
 	private static final String RACE = "Race";
 
-	/**
-	 * 
-	 */
+	/** The Constant logger. */
 	private static final transient Logger logger = LoggerFactory.getLogger(GPROCalendarBrowserTest.class);
 	
-	/**
-	 * 
-	 */
+	/** The contexto. */
 	private ApplicationContext contexto = null;
 	
-	/**
-	 * 
-	 */
+	/** The is. */
 	private InputStream is = null;
 
+	/**
+	 * Sets the up.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Before
 	/**
 	 * 
@@ -102,6 +97,11 @@ public class GPROCalendarBrowserTest extends TestCase {
 		
 	}
 
+	/**
+	 * Tear down.
+	 *
+	 * @throws Exception the exception
+	 */
 	@After
 	/**
 	 * 
@@ -113,33 +113,43 @@ public class GPROCalendarBrowserTest extends TestCase {
 		}
 		logger.info("test tearDown");
 	}
+	
+	/**
+	 * Test formateo.
+	 */
+	@Test
+	public void testFormateo() {
+		String importe = "8476";
+		
+		double importeDouble = Double.valueOf(importe);
+		double importeEuros = importeDouble / 100;
+		
+		
+		double d = 1234567.89;    
+		assertEquals(new DecimalFormat("#.##").format(d), "1234567,89");
+		assertEquals(new DecimalFormat("0.00").format(d), "1234567,89");
+		assertEquals(new DecimalFormat("#.##").format(importeEuros), "84,76");
+		
+		assertEquals(new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH)).format(d), "1234567.89");
+		assertEquals(new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH)).format(d), "1234567.89");
+		assertEquals(new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH)).format(importeEuros), "84.76");
+		
+		
+		String format = "Documento pendiente de pago ({0}) - Error devuelto por el servicio de comprobación de estado del documento (SCH) ''{0}'': {1}-{2}";
+		
+		String resultado = MessageFormat.format(format, "046", "11", "Grafana");
+		logger.info(resultado);
+		assertEquals(resultado, "Documento pendiente de pago (046) - Error devuelto por el servicio de comprobación de estado del documento (SCH) '046': 11-Grafana");
+	}
 
+	/**
+	 * Test import calendar.
+	 */
 	@Test
 	/**
 	 * 
 	 */
-	public void test() {
-//		String importe = "8476";
-//		
-//		double importeDouble = Double.valueOf(importe);
-//		double importeEuros = importeDouble / 100;
-//		
-//		
-//		double d = 1234567.89;    
-//		assertEquals(new DecimalFormat("#.##").format(d), "1234567,89");
-//		assertEquals(new DecimalFormat("0.00").format(d), "1234567,89");
-//		assertEquals(new DecimalFormat("#.##").format(importeEuros), "84,76");
-//		
-//		assertEquals(new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH)).format(d), "1234567.89");
-//		assertEquals(new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH)).format(d), "1234567.89");
-//		assertEquals(new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH)).format(importeEuros), "84.76");
-//		
-//		
-//		String format = "Documento pendiente de pago ({0}) - Error devuelto por el servicio de comprobación de estado del documento (SCH) ''{0}'': {1}-{2}";
-//		
-//		String resultado = MessageFormat.format(format, "046", "11", "Grafana");
-//		logger.info(resultado);
-//		assertEquals(resultado, "Documento pendiente de pago (046) - Error devuelto por el servicio de comprobación de estado del documento (SCH) '046': 11-Grafana");
+	public void testImportCalendar() {
 		
 		CalendarBuilder builder = new CalendarBuilder();
 		int seasonId = 0;
@@ -279,10 +289,8 @@ public class GPROCalendarBrowserTest extends TestCase {
 			racesCount = fSeason.getRaces(currentSeason).size();
 			seasonId = fSeason.getSeason(seasonNumber).getIdSeason();
 			
-		} catch (IOException e) {
-			logger.error("IOException", e);
-		} catch (ParserException e) {
-			logger.error("ParserException", e);
+		} catch (Exception e) {
+			logger.error(e.getClass().getName(), e);
 		}
 		
 		assertEquals(seasonId, seasonNumber);
