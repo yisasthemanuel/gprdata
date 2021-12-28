@@ -1,6 +1,5 @@
 package org.jlobato.gpro.test.calendar;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -25,7 +24,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import junit.framework.TestCase;
 import net.fortuna.ical4j.data.CalendarBuilder;
-import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Component;
 import net.fortuna.ical4j.model.Property;
@@ -82,7 +80,7 @@ public class GPROCalendarBrowserTest extends TestCase {
 		//Entorno desarrollo
 		System.setProperty("entorno", "L");
 		
-		String calendarFileName = "GPROCalS81.ics";
+		String calendarFileName = "GPROCalS85.ics";
 		
 		//Cargamos el contexto spring (el mismo contexto que la aplicación web)
 		//contexto = new FileSystemXmlApplicationContext(APPLICATION_CONTEXT);

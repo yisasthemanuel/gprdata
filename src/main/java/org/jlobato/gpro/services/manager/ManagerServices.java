@@ -57,6 +57,9 @@ public class ManagerServices {
 	/** The Constant MIKKO_MANAGER_CODE. */
 	public static final String MIKKO_MANAGER_CODE = "MIKKO";
 	
+	/** The Constant MIKKO_MANAGER_CODE. */
+	public static final String ERWIN_MANAGER_CODE = "ERWIN";
+	
 	/**
 	 * The main method.
 	 *
