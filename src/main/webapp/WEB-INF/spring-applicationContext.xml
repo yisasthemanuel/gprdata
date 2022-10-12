@@ -38,7 +38,7 @@
 
 	<!-- Imports the configurations of the different infrastructure systems of the application -->
 	<import resource="spring-database.xml" /> <!-- Data --> 
-	<import resource="spring-mvc.xml" /> <!-- MVC -->
+ 	<import resource="spring-mvc.xml" /> <!-- MVC -->
 	<import resource="spring-security.xml" /> <!-- Security -->
 
 	<!-- Para que se hagan visibles propiedades del sistema en la configuración -->

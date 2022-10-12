@@ -57,9 +57,18 @@ public class ManagerServices {
 	/** The Constant MIKKO_MANAGER_CODE. */
 	public static final String MIKKO_MANAGER_CODE = "MIKKO";
 	
-	/** The Constant MIKKO_MANAGER_CODE. */
+	/** The Constant ERWIN_MANAGER_CODE. */
 	public static final String ERWIN_MANAGER_CODE = "ERWIN";
+
+	/** The Constant JENNE_MANAGER_CODE. */
+	public static final String JENNE_MANAGER_CODE = "JENNE";
 	
+	/** The Constant DANIEL_MANAGER_CODE. */
+	public static final String DANIEL_MANAGER_CODE = "DANIEL";
+	
+	/** The Constant STEVEN_MANAGER_CODE. */
+	public static final String STEVEN_MANAGER_CODE = "STEVEN";
+		
 	/**
 	 * The main method.
 	 *
@@ -69,10 +78,10 @@ public class ManagerServices {
 		ApplicationContext contexto = null;
 		try {
 			//Entorno desarrollo
-			System.setProperty("entorno", "I");
+			System.setProperty("entorno", "L");
 			
 			//Cargamos el contexto spring (el mismo contexto que la aplicación web)
-			contexto = new FileSystemXmlApplicationContext("C:/Desarrollo/oxygenws/gprdata/gprdata/src/main/webapp/WEB-INF/spring-applicationContext.xml");
+			contexto = new FileSystemXmlApplicationContext("C:/Desarrollo/git/gprdata/src/test/resources/spring-context/spring-applicationContext.xml");
 			
 			//Creamos nuestro objeto 
 			ManagerServices managerServices = contexto.getBean(ManagerServices.class);
