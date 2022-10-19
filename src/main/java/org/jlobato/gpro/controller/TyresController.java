@@ -24,7 +24,7 @@ public class TyresController {
 	 *
 	 * @return the model and view
 	 */
-	@GetMapping(value = "/tyres")
+	@GetMapping(value = "/tyres.html")
 	public ModelAndView mainTyres() {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/tyres/tyres");
@@ -37,7 +37,7 @@ public class TyresController {
 	 * @param text the text
 	 * @return the string
 	 */
-	@PostMapping(value = "/preview", produces = MediaType.TEXT_HTML_VALUE)
+	@PostMapping(value = "/preview.html", produces = MediaType.TEXT_HTML_VALUE)
 	@ResponseBody
     public String welcomeAsHTML(String text) {
 		Document document = new BBCodeParser().buildDocument(text, null);

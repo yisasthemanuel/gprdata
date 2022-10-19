@@ -97,7 +97,7 @@ public class ResultsController {
 	 * @param currentRace the current race
 	 * @return the results
 	 */
-	@GetMapping(value = "/results")
+	@GetMapping(value = "/results.html")
 	public ModelAndView getResults(
 			@RequestParam(value="currentSeason", required=false) String currentSeason,
 			@RequestParam(value="currentRace", required=false) String currentRace) {

@@ -53,6 +53,14 @@ public class InicioController {
 		logger.debug("InicioController.login - end");
 		return modelAndView;
 	}
+	
+	@RequestMapping(value = "/")
+	public ModelAndView index(HttpServletRequest request, HttpSession session)	{
+		logger.debug("InicioController.index - begin");
+		logger.debug("InicioController.index - end");
+		return main(request, session);
+	}
+	
 
 	/**
 	 * 

@@ -2,6 +2,9 @@ package org.jlobato.gpro.controller;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 /**
  * The Class GprcupController.
@@ -42,6 +46,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class GprcupController {
 	
 	
+	private static final String TEXT_PLAIN = "text/plain";
+
+	private static final String ATTACHMENT_FILENAME = "attachment; filename=";
+
+	private static final String CONTENT_DISPOSITION = "Content-Disposition";
+
 	/** The Constant CURRENT_CUP_STANDINGS. */
 	private static final String CURRENT_CUP_STANDINGS = "currentCupStandings";
 
@@ -74,6 +84,9 @@ public class GprcupController {
 	/** The cup service. */
 	@Autowired
 	private GPROCupService cupService;
+	
+	@Autowired
+	private SessionLocaleResolver locale; 
 
 	/**
 	 * Cup.
@@ -158,9 +171,10 @@ public class GprcupController {
 	 * @param request the request
 	 * @param session the session
 	 * @return the model and view
+	 * @throws ParseException 
 	 */
 	@PostMapping(value = "/showStandings.html")
-	public ModelAndView showStandings(HttpServletRequest request, HttpSession session) {
+	public ModelAndView showStandings(HttpServletRequest request, HttpSession session) throws ParseException {
 		logger.debug("GprcupController.showStandings - begin");
 		
         ModelAndView modelAndView = new ModelAndView();
@@ -204,10 +218,13 @@ public class GprcupController {
 	 *
 	 * @param request the request
 	 * @return the cup standings
+	 * @throws ParseException 
 	 */
-	private CupStandingsSnapshot getCupStandings(HttpServletRequest request) {
+	private CupStandingsSnapshot getCupStandings(HttpServletRequest request) throws ParseException {
 		CupStandingsSnapshot result = new CupStandingsSnapshot();
-		
+        
+        DecimalFormat formatter = new DecimalFormat("#.#", DecimalFormatSymbols.getInstance(locale.resolveLocale(request)));
+        
 		//Managers
         String manager01 = request.getParameter("qfManager01");
         logger.debug("GprcupController.getCupStandings.qfManager01 - {}", manager01);
@@ -298,41 +315,17 @@ public class GprcupController {
         String fmanager02Score = request.getParameter("fManager02Score");
         logger.debug("GprcupController.getCupStandings.fManager02Score - {}", fmanager02Score);
         
-        result.setIdManagerQf1(getManagerID(manager01));
-        result.setIdManagerQf2(getManagerID(manager02));
-        result.setIdManagerQf3(getManagerID(manager03));
-        result.setIdManagerQf4(getManagerID(manager04));
-        result.setIdManagerQf5(getManagerID(manager05));
-        result.setIdManagerQf6(getManagerID(manager06));
-        result.setIdManagerQf7(getManagerID(manager07));
-        result.setIdManagerQf8(getManagerID(manager08));
+        setQF4Managers(result, manager01, manager02, manager03, manager04);
+        setQF8Managers(result, manager05, manager06, manager07, manager08);
         
-        result.setScoreManagerQf1((qfmanager01Score != null && !"".equals(qfmanager01Score)) ? new BigDecimal(qfmanager01Score) : null);
-        result.setScoreManagerQf2((qfmanager02Score != null && !"".equals(qfmanager02Score)) ? new BigDecimal(qfmanager02Score) : null);
-        result.setScoreManagerQf3((qfmanager03Score != null && !"".equals(qfmanager03Score)) ? new BigDecimal(qfmanager03Score) : null);
-        result.setScoreManagerQf4((qfmanager04Score != null && !"".equals(qfmanager04Score)) ? new BigDecimal(qfmanager04Score) : null);
-        result.setScoreManagerQf5((qfmanager05Score != null && !"".equals(qfmanager05Score)) ? new BigDecimal(qfmanager05Score) : null);
-        result.setScoreManagerQf6((qfmanager06Score != null && !"".equals(qfmanager06Score)) ? new BigDecimal(qfmanager06Score) : null);
-        result.setScoreManagerQf7((qfmanager07Score != null && !"".equals(qfmanager07Score)) ? new BigDecimal(qfmanager07Score) : null);
-        result.setScoreManagerQf8((qfmanager08Score != null && !"".equals(qfmanager08Score)) ? new BigDecimal(qfmanager08Score) : null);
+        setQF4Scores(result, qfmanager01Score, qfmanager02Score, qfmanager03Score, qfmanager04Score, formatter);
+        setQF8Scores(result, qfmanager05Score, qfmanager06Score, qfmanager07Score, qfmanager08Score, formatter);
 
-        result.setIdManagerSf1(getManagerID(sfmanager01));
-        result.setIdManagerSf2(getManagerID(sfmanager02));
-        result.setIdManagerSf3(getManagerID(sfmanager03));
-        result.setIdManagerSf4(getManagerID(sfmanager04));
+        setSFManagers(result, sfmanager01, sfmanager02, sfmanager03, sfmanager04);
         
-        result.setScoreManagerSf1((sfmanager01Score != null && !"".equals(sfmanager01Score)) ? new BigDecimal(sfmanager01Score) : null);
-        result.setScoreManagerSf2((sfmanager02Score != null && !"".equals(sfmanager02Score)) ? new BigDecimal(sfmanager02Score) : null);
-        result.setScoreManagerSf3((sfmanager03Score != null && !"".equals(sfmanager03Score)) ? new BigDecimal(sfmanager03Score) : null);
-        result.setScoreManagerSf4((sfmanager04Score != null && !"".equals(sfmanager04Score)) ? new BigDecimal(sfmanager04Score) : null);
+        setSFScores(result, sfmanager01Score, sfmanager02Score, sfmanager03Score, sfmanager04Score, formatter);
         
-        result.setIdManagerFi1(getManagerID(fmanager01));
-        result.setIdManagerFi2(getManagerID(fmanager02));
-        
-        result.setScoreManagerFi1((fmanager01Score != null && !"".equals(fmanager01Score)) ? new BigDecimal(fmanager01Score) : null);
-        result.setScoreManagerFi2((fmanager02Score != null && !"".equals(fmanager02Score)) ? new BigDecimal(fmanager02Score) : null);
-        
-        result.setIdManagerWinner(getManagerID(fmanagerWinner));
+        setFinalManagerScores(result, fmanager01, fmanager02, fmanagerWinner, fmanager01Score, fmanager02Score, formatter);
         
         //Recuperamos la carrera para la que se guarda la clasificación
         Race theRace = fachadaSeason.getRace(Short.valueOf(request.getParameter(CURRENT_RACE)));
@@ -346,6 +339,65 @@ public class GprcupController {
         result.setIdTeam(fachadaCup.getDefaultTeam().getIdTeam());
         
         return result;
+	}
+
+	private void setQF8Scores(CupStandingsSnapshot result, String qfmanager05Score, String qfmanager06Score,
+			String qfmanager07Score, String qfmanager08Score, DecimalFormat formatter) throws ParseException {
+		result.setScoreManagerQf5((qfmanager05Score != null && !"".equals(qfmanager05Score)) ? BigDecimal.valueOf(formatter.parse(qfmanager05Score).doubleValue()) : null);
+        result.setScoreManagerQf6((qfmanager06Score != null && !"".equals(qfmanager06Score)) ? BigDecimal.valueOf(formatter.parse(qfmanager06Score).doubleValue()) : null);
+        result.setScoreManagerQf7((qfmanager07Score != null && !"".equals(qfmanager07Score)) ? BigDecimal.valueOf(formatter.parse(qfmanager07Score).doubleValue()) : null);
+        result.setScoreManagerQf8((qfmanager08Score != null && !"".equals(qfmanager08Score)) ? BigDecimal.valueOf(formatter.parse(qfmanager08Score).doubleValue()) : null);
+	}
+
+	private void setQF4Scores(CupStandingsSnapshot result, String qfmanager01Score, String qfmanager02Score,
+			String qfmanager03Score, String qfmanager04Score, DecimalFormat formatter) throws ParseException {
+		result.setScoreManagerQf1((qfmanager01Score != null && !"".equals(qfmanager01Score)) ? BigDecimal.valueOf(formatter.parse(qfmanager01Score).doubleValue()) : null);
+        result.setScoreManagerQf2((qfmanager02Score != null && !"".equals(qfmanager02Score)) ? BigDecimal.valueOf(formatter.parse(qfmanager02Score).doubleValue()) : null);
+        result.setScoreManagerQf3((qfmanager03Score != null && !"".equals(qfmanager03Score)) ? BigDecimal.valueOf(formatter.parse(qfmanager03Score).doubleValue()) : null);
+        result.setScoreManagerQf4((qfmanager04Score != null && !"".equals(qfmanager04Score)) ? BigDecimal.valueOf(formatter.parse(qfmanager04Score).doubleValue()) : null);
+	}
+
+	private void setFinalManagerScores(CupStandingsSnapshot result, String fmanager01, String fmanager02,
+			String fmanagerWinner, String fmanager01Score, String fmanager02Score, DecimalFormat formatter) throws ParseException {
+		result.setIdManagerFi1(getManagerID(fmanager01));
+        result.setIdManagerFi2(getManagerID(fmanager02));
+                
+        result.setScoreManagerFi1((fmanager01Score != null && !"".equals(fmanager01Score)) ? BigDecimal.valueOf(formatter.parse(fmanager01Score).doubleValue()) : null);
+        result.setScoreManagerFi2((fmanager02Score != null && !"".equals(fmanager02Score)) ? BigDecimal.valueOf(formatter.parse(fmanager02Score).doubleValue()) : null);
+        
+        result.setIdManagerWinner(getManagerID(fmanagerWinner));
+	}
+
+	private void setSFScores(CupStandingsSnapshot result, String sfmanager01Score, String sfmanager02Score,
+			String sfmanager03Score, String sfmanager04Score, DecimalFormat formatter) throws ParseException {
+		result.setScoreManagerSf1((sfmanager01Score != null && !"".equals(sfmanager01Score)) ? BigDecimal.valueOf(formatter.parse(sfmanager01Score).doubleValue()) : null);
+        result.setScoreManagerSf2((sfmanager02Score != null && !"".equals(sfmanager02Score)) ? BigDecimal.valueOf(formatter.parse(sfmanager02Score).doubleValue()) : null);
+        result.setScoreManagerSf3((sfmanager03Score != null && !"".equals(sfmanager03Score)) ? BigDecimal.valueOf(formatter.parse(sfmanager03Score).doubleValue()) : null);
+        result.setScoreManagerSf4((sfmanager04Score != null && !"".equals(sfmanager04Score)) ? BigDecimal.valueOf(formatter.parse(sfmanager04Score).doubleValue()) : null);
+	}
+
+	private void setSFManagers(CupStandingsSnapshot result, String sfmanager01, String sfmanager02, String sfmanager03,
+			String sfmanager04) {
+		result.setIdManagerSf1(getManagerID(sfmanager01));
+        result.setIdManagerSf2(getManagerID(sfmanager02));
+        result.setIdManagerSf3(getManagerID(sfmanager03));
+        result.setIdManagerSf4(getManagerID(sfmanager04));
+	}
+
+	private void setQF8Managers(CupStandingsSnapshot result, String manager05, String manager06, String manager07,
+			String manager08) {
+		result.setIdManagerQf5(getManagerID(manager05));
+        result.setIdManagerQf6(getManagerID(manager06));
+        result.setIdManagerQf7(getManagerID(manager07));
+        result.setIdManagerQf8(getManagerID(manager08));
+	}
+
+	private void setQF4Managers(CupStandingsSnapshot result, String manager01, String manager02, String manager03,
+			String manager04) {
+		result.setIdManagerQf1(getManagerID(manager01));
+        result.setIdManagerQf2(getManagerID(manager02));
+        result.setIdManagerQf3(getManagerID(manager03));
+        result.setIdManagerQf4(getManagerID(manager04));
 	}
 	
 	/**
@@ -370,9 +422,10 @@ public class GprcupController {
 	 * @param request the request
 	 * @param session the session
 	 * @return the model and view
+	 * @throws ParseException 
 	 */
 	@PostMapping(value = "/saveStandings.html")
-	public ModelAndView saveStandings(HttpServletRequest request, HttpSession session) {
+	public ModelAndView saveStandings(HttpServletRequest request, HttpSession session) throws ParseException {
 		logger.debug("GprcupController.saveStandings - begin");
 		
         //Creamos el objeto CupStandings
@@ -427,8 +480,8 @@ public class GprcupController {
         //TODO Redirigir a una página genérica de download
         
         if (result != null) {
-        	response.setContentType("text/plain");
-        	response.addHeader("Content-Disposition", "attachment; filename=" + "seeding_post.txt");
+        	response.setContentType(TEXT_PLAIN);
+        	response.addHeader(CONTENT_DISPOSITION, ATTACHMENT_FILENAME + "seeding_post.txt");
         	try {
 				response.getWriter().write(result);
 			} catch (IOException e) {
@@ -472,8 +525,8 @@ public class GprcupController {
         
         //TODO Redirigir a una página genérica de download
         if (result != null) {
-        	response.setContentType("text/plain");
-        	response.addHeader("Content-Disposition", "attachment; filename=" + "statistics_post.txt");
+        	response.setContentType(TEXT_PLAIN);
+        	response.addHeader(CONTENT_DISPOSITION, ATTACHMENT_FILENAME + "statistics_post.txt");
         	try {
 				response.getWriter().write(result);
 			} catch (IOException e) {
@@ -493,13 +546,14 @@ public class GprcupController {
 	 * @param response the response
 	 * @param screenshotURL the screenshot URL
 	 * @throws TemplateException the template exception
+	 * @throws ParseException 
 	 */
 	@PostMapping(value = "/round.html")
 	public void exportCurrentStatus(
 			HttpServletRequest request,
 			HttpSession session,
 			HttpServletResponse response,
-			String screenshotURL) throws TemplateException {
+			String screenshotURL) throws TemplateException, ParseException {
 		logger.debug("GprcupController.exportStatistics - begin");
 		CupStandingsSnapshot cupStandings = getCupStandings(request);
 
@@ -520,8 +574,8 @@ public class GprcupController {
 
 		//TODO Redirigir a una página genérica de download
 		if (result != null) {
-			response.setContentType("text/plain");
-			response.addHeader("Content-Disposition", "attachment; filename=" + "round_post_" + cupService.getRoundForPostFromRace(idRace, idSeason) + ".txt");
+			response.setContentType(TEXT_PLAIN);
+			response.addHeader(CONTENT_DISPOSITION, ATTACHMENT_FILENAME + "round_post_" + cupService.getRoundForPostFromRace(idRace, idSeason) + ".txt");
 			try {
 				response.getWriter().write(result);
 			} catch (IOException e) {

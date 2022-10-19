@@ -4,7 +4,7 @@
 ## Ejecución de la imagen
 
 ```shell
-docker run -d -e entorno=I -e DOCKER_TIMEZONE=Europe/Madrid -p 8080:8080 --name yisas-gprdata --rm yisasthemanuel/gprdata:1.4.4.RELEASE
+docker run -d -e entorno=I -e DOCKER_TIMEZONE=Europe/Madrid -p 8080:8080 --name yisas-gprdata --rm yisasthemanuel/gprdata:1.4.6.RELEASE
 ```
 
 ** Banner generado con la fuente alligator2 (https://devops.datenkollektiv.de/banner.txt/index.html)
@@ -96,6 +96,10 @@ docker run -d -p 1234:8080 -e CONFIG_SERVER=http://192.168.0.38:8888 -e SPRING_P
 ## Guías [EN]
 
 * [Building a RESTful Web Service with Spring Boot Actuator](https://spring.io/guides/gs/actuator-service/)
+
+## Changelog [EN]
+
+* **1.4.6 (14/10/2022)** - Se aplican las alertas de seguridad enviadas por Github: Improper Input Validation and Injection in Apache Log4j2, Remote Code Execution in Spring Framework, Uncontrolled Resource Consumption in FasterXML jackson-databind, Uncontrolled Resource Consumption in Jackson-databind and Deeply nested json in jackson-databind
 
 ## TODOs
 
