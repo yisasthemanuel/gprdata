@@ -56,7 +56,7 @@ public class ManagerHistoryUpdater {
 		managerService.updateManagerHistory(
 				manager.getCodeManager(),
 				(short)idSeason,
-				category.getIdCategory().shortValue(),
+				category.getIdCategory(),
 				group != null ? group.shortValue() : null,
 				tyreBrand != null ? tyreBrand.getIdTyreBrand() : null,
 				(short)position,
@@ -98,7 +98,7 @@ public class ManagerHistoryUpdater {
 				
 				//TODO Cambiar a version 1.1.4 de mybatis
 				Optional<Category> optCategory = Optional.ofNullable(categoryService.getCategoryByAltCode(GPROUtils.getCategoryCode(season.getGroup())));
-				Integer idCategory = optCategory.map(category -> category.getIdCategory()).orElse(null); 
+				Short idCategory = optCategory.map(category -> category.getIdCategory()).orElse(null); 
 				Short idGroup = GPROUtils.castIfNotNull(GPROUtils.getGroupId(season.getGroup()), Short.class);
 				Short position = GPROUtils.castIfNotNull(season.getPosition(), Short.class);
 				Short wins = GPROUtils.castIfNotNull(season.getWins(), Short.class);
@@ -117,7 +117,7 @@ public class ManagerHistoryUpdater {
 					//managerService.addManagerHistory(manager.getCodeManager(),
 					managerService.updateManagerHistory(manager.getCodeManager(),
 							idSeason,
-							idCategory.shortValue(),
+							idCategory,
 							idGroup,
 							tyreBrand,
 							position,
@@ -165,20 +165,18 @@ public class ManagerHistoryUpdater {
 		}
 		
 		int nextSeason = idSeason.shortValue() + 1;
-
-		
 		
 		//manager, season, categoría, grupo, posición, neumáticos
-		setManagerHistory(contexto, ManagerServices.JENNE_MANAGER_CODE, nextSeason, "E", null, 14, null /*TyreSuppliers.MICHIS.getName()*/);
+		setManagerHistory(contexto, ManagerServices.JENNE_MANAGER_CODE, nextSeason, "E", null, 14, TyreSuppliers.CONTIS.getName());
 		
-		setManagerHistory(contexto, ManagerServices.GEOFF_MANAGER_CODE, nextSeason, "M", 1, 14, null /*TyreSuppliers.DUNNOS.getName()*/);
-		setManagerHistory(contexto, ManagerServices.MIKKO_MANAGER_CODE, nextSeason, "M", 3, 1, null /*TyreSuppliers.YOKOS.getName()*/);
-		setManagerHistory(contexto, ManagerServices.JESUS_MANAGER_CODE, nextSeason, "M", 4, 31, null /*TyreSuppliers.MICHIS.getName()*/);
+		setManagerHistory(contexto, ManagerServices.GEOFF_MANAGER_CODE, nextSeason, "M", 1, 14, TyreSuppliers.YOKOS.getName());
+		setManagerHistory(contexto, ManagerServices.MIKKO_MANAGER_CODE, nextSeason, "M", 3, 1, TyreSuppliers.YOKOS.getName());
+		setManagerHistory(contexto, ManagerServices.JESUS_MANAGER_CODE, nextSeason, "M", 4, 31, TyreSuppliers.YOKOS.getName());
 		
-		setManagerHistory(contexto, ManagerServices.ANIA_MANAGER_CODE, nextSeason, "P", 8, 37, null /*TyreSuppliers.HANCKS.getName()*/);
+		setManagerHistory(contexto, ManagerServices.ANIA_MANAGER_CODE, nextSeason, "P", 8, 37, TyreSuppliers.YOKOS.getName());
 		
 		setManagerHistory(contexto, ManagerServices.NEVZA_MANAGER_CODE, nextSeason, "A", 14, 1, TyreSuppliers.PIPIS.getName());
-		setManagerHistory(contexto, ManagerServices.DANIEL_MANAGER_CODE, nextSeason, "A", 34, 23, null /*TyreSuppliers.YOKOS.getName()*/);
+		setManagerHistory(contexto, ManagerServices.DANIEL_MANAGER_CODE, nextSeason, "A", 34, 23, TyreSuppliers.PIPIS.getName());
 		setManagerHistory(contexto, ManagerServices.STEVEN_MANAGER_CODE, nextSeason, "A", 44, 1, TyreSuppliers.PIPIS.getName());
 		setManagerHistory(contexto, ManagerServices.CARLO_MANAGER_CODE, nextSeason, "A", 69, 1, TyreSuppliers.PIPIS.getName());
 		setManagerHistory(contexto, ManagerServices.MARK_MANAGER_CODE, nextSeason, "A", 70, 2, TyreSuppliers.PIPIS.getName());

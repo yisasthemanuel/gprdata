@@ -136,6 +136,7 @@ public class ResultsController {
 		
 		// Se incluye el salto para actualizar los resultados
 		modelAndView.addObject("gproresultsUrlUpdate", hostManagerMicroservice + "managers/results");
+		modelAndView.addObject("gproresultsPositionsUrlUpdate", hostManagerMicroservice + "update-position");
 		
 		// Se añade la información sobre el grupo al que pertenece cada manager y se genera el correspondiente enlace
 		List<String> history = new ArrayList<>(); 

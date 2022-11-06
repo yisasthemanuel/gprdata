@@ -48,7 +48,7 @@ function updatePosition(codeSeason, codeManager, combo) {
 	//Peticion PUT
 	$.ajax({
 	    type: "PUT",
-	    url: "http://localhost:9080/managers/update-position/" + codeSeason + "/" + codeManager + "?position=" + combo.value,
+	    url: "${gproresultsPositionsUrlUpdate}" + "/" + codeSeason + "/" + codeManager + "?position=" + combo.value,
 	    success: function (data, textStatus, xhr) {
 	    	$('#cargando').hide();
 	    	$('#exito-critica-publico').show();
