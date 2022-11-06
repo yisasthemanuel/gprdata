@@ -106,7 +106,6 @@ public class ResultsController {
 		
 		//Modelo
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("Texto", "Eso es asín");
 		
 		// Get the season object
         Season season = null;
@@ -136,7 +135,7 @@ public class ResultsController {
 		
 		// Se incluye el salto para actualizar los resultados
 		modelAndView.addObject("gproresultsUrlUpdate", hostManagerMicroservice + "managers/results");
-		modelAndView.addObject("gproresultsPositionsUrlUpdate", hostManagerMicroservice + "update-position");
+		modelAndView.addObject("gproresultsPositionsUrlUpdate", hostManagerMicroservice + "managers/update-position");
 		
 		// Se añade la información sobre el grupo al que pertenece cada manager y se genera el correspondiente enlace
 		List<String> history = new ArrayList<>(); 
@@ -177,8 +176,82 @@ public class ResultsController {
 		//Vista
 		modelAndView.setViewName("/results/putresults");
 		
+		return modelAndView;
+	}
+	
+	/**
+	 * Gets the results.
+	 *
+	 * @param currentSeason the current season
+	 * @param currentRace the current race
+	 * @return the results
+	 */
+	@GetMapping(value = "/results-manager.html")
+	public ModelAndView getResultsManager(
+			@RequestParam(value="currentSeason", required=true) String currentSeason) {
+		
+		// TODO: Meter equipo por defecto 
+		//Modelo
+		ModelAndView modelAndView = new ModelAndView();
+		
+		// Get the season object
+        Season season = fachadaSeason.getSeason(new Integer(currentSeason));
+        
+        // Get the race object
+        Race race = fachadaSeason.getRace(season.getIdSeason(), 1);
+        
+		// Temporada y carrera actual
+        modelAndView.addObject("currentSeasonID", season.getIdSeason());
+        modelAndView.addObject("currentRaceID", race.getIdRace());
+        
+		// Añadimos la llamada al microservicio
+		RestTemplate restTemplate = new RestTemplate();
+		@SuppressWarnings("unchecked")
+		List<ManagerResult> results = restTemplate.getForObject(hostManagerMicroservice + "managers/results/" + season.getIdSeason() + "/" + race.getIdRace(), List.class);
+		
+		// Se incluye el salto para actualizar los resultados
+		modelAndView.addObject("gproresultsUrlUpdate", hostManagerMicroservice + "managers/results");
+		modelAndView.addObject("gproresultsPositionsUrlUpdate", hostManagerMicroservice + "managers/update-position");
+		
+		// Se añade la información sobre el grupo al que pertenece cada manager y se genera el correspondiente enlace
+		List<String> history = new ArrayList<>(); 
+		List<String> urls = new ArrayList<>();
+		List<String> positions = new ArrayList<>();
+		if (results != null) {
+			final Short seasonId = season.getIdSeason();
+			
+			for (int i = 0; i < results.size(); i++) {
+				String code;
+				try {
+					code = PropertyUtils.getProperty(results.get(i), "codeManager").toString();
+					populateGroupName(
+							fachadaManager.getManagerHistory(fachadaManager.getManagerByCode(code).getIdManager(), seasonId),
+							history,
+							urls,
+							positions);
+				} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+					logger.error("Error getting code manager from list");
+				}
+			}
+
+			// Añadimos la lista de managers en función de la carrera actual
+			modelAndView.addObject("managersList", results);
+			modelAndView.addObject("history", history);
+			modelAndView.addObject("urls", urls);
+			modelAndView.addObject("currentPositions", positions);
+			modelAndView.addObject("positionList", positionList);
+			modelAndView.addObject("racePositionList", racePositionList);
+			modelAndView.addObject("gridPositionList", gridPositionList);
+		}
 		
 		
+        // Combo de temporadas
+        modelAndView.addObject("seasonList", fachadaSeason.getAvailableSeasons());
+        // Combo de carreras
+        modelAndView.addObject("racesList", fachadaSeason.getRaces(season));
+        
+		
+		modelAndView.setViewName("/results/putresultsmanager");
 		return modelAndView;
 	}
 	

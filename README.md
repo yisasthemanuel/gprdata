@@ -4,7 +4,7 @@
 ## Ejecución de la imagen
 
 ```shell
-docker run -d -e entorno=I -e DOCKER_TIMEZONE=Europe/Madrid -p 8080:8080 --name yisas-gprdata --rm yisasthemanuel/gprdata:1.4.6.1.RELEASE
+docker run -d -e entorno=I -e DOCKER_TIMEZONE=Europe/Madrid -p 8080:8080 --name yisas-gprdata --rm yisasthemanuel/gprdata:1.4.6.2.RELEASE
 ```
 
 ** Banner generado con la fuente alligator2 (https://devops.datenkollektiv.de/banner.txt/index.html)
@@ -99,9 +99,11 @@ docker run -d -p 1234:8080 -e CONFIG_SERVER=http://192.168.0.38:8888 -e SPRING_P
 
 ## Changelog [ES]
 
-* **1.4.6 (14/10/2022)** - Se aplican las alertas de seguridad enviadas por Github: Improper Input Validation and Injection in Apache Log4j2, Remote Code Execution in Spring Framework, Uncontrolled Resource Consumption in FasterXML jackson-databind, Uncontrolled Resource Consumption in Jackson-databind and Deeply nested json in jackson-databind
+* **1.4.6 (14/10/2022)** - Se aplican las alertas de seguridad enviadas por Github: Improper Input Validation and Injection in Apache Log4j2, Remote Code Execution in Spring Framework, Uncontrolled Resource Consumption in FasterXML jackson-databind, Uncontrolled Resource Consumption in Jackson-databind and Deeply nested json in jackson-databind.
 
 * **1.4.6.1 (06/11/2022)** - Se corrige la llamada al servicio de actualización de la posición de un manager en la temporada desde la pantalla de resultados.
+
+* **1.4.6.2 (06/11/2022)** - Se corrige la URL de la llamada al servicio de actualización de la posición de un manager.
 
 ## TODOs
 
