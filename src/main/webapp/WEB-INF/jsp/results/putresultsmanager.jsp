@@ -36,25 +36,6 @@ function calculaSeason(urlAction, sentido) {
 	document.location.replace(urlAction);
 }
 
-function updatePosition(codeSeason, codeManager, combo) {
-	//Peticion PUT
-	$.ajax({
-	    type: "PUT",
-	    url: "${gproresultsPositionsUrlUpdate}" + "/" + codeSeason + "/" + codeManager + "?position=" + combo.value,
-	    success: function (data, textStatus, xhr) {
-	    	$('#cargando').hide();
-	    	$('#exito-critica-publico').show();
-	    	$('#alert-error').hide();
-	    },
-	    error: function (xhr, textStatus, errorThrown) {
-	    	console.log(errorThrown);
-	    	$('#cargando').hide();
-	    	$('#alert-error').show();
-	    	$('#exito-critica-publico').hide();
-	    }
-	});
-	
-}
 </script>
 
 <c:url var="reloadAction" value="/results/results.html"/>

@@ -2,6 +2,7 @@ package org.jlobato.gpro.controller;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -198,57 +199,60 @@ public class ResultsController {
         Season season = fachadaSeason.getSeason(new Integer(currentSeason));
         
         // Get the race object
-        Race race = fachadaSeason.getRace(season.getIdSeason(), 1);
+        //Race race = fachadaSeason.getRace(season.getIdSeason(), 1);
         
-		// Temporada y carrera actual
+		// Temporada actual
         modelAndView.addObject("currentSeasonID", season.getIdSeason());
-        modelAndView.addObject("currentRaceID", race.getIdRace());
         
-		// Añadimos la llamada al microservicio
-		RestTemplate restTemplate = new RestTemplate();
-		@SuppressWarnings("unchecked")
-		List<ManagerResult> results = restTemplate.getForObject(hostManagerMicroservice + "managers/results/" + season.getIdSeason() + "/" + race.getIdRace(), List.class);
-		
-		// Se incluye el salto para actualizar los resultados
-		modelAndView.addObject("gproresultsUrlUpdate", hostManagerMicroservice + "managers/results");
-		modelAndView.addObject("gproresultsPositionsUrlUpdate", hostManagerMicroservice + "managers/update-position");
-		
-		// Se añade la información sobre el grupo al que pertenece cada manager y se genera el correspondiente enlace
-		List<String> history = new ArrayList<>(); 
-		List<String> urls = new ArrayList<>();
-		List<String> positions = new ArrayList<>();
-		if (results != null) {
-			final Short seasonId = season.getIdSeason();
-			
-			for (int i = 0; i < results.size(); i++) {
-				String code;
-				try {
-					code = PropertyUtils.getProperty(results.get(i), "codeManager").toString();
-					populateGroupName(
-							fachadaManager.getManagerHistory(fachadaManager.getManagerByCode(code).getIdManager(), seasonId),
-							history,
-							urls,
-							positions);
-				} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-					logger.error("Error getting code manager from list");
-				}
-			}
-
-			// Añadimos la lista de managers en función de la carrera actual
-			modelAndView.addObject("managersList", results);
-			modelAndView.addObject("history", history);
-			modelAndView.addObject("urls", urls);
-			modelAndView.addObject("currentPositions", positions);
-			modelAndView.addObject("positionList", positionList);
-			modelAndView.addObject("racePositionList", racePositionList);
-			modelAndView.addObject("gridPositionList", gridPositionList);
-		}
-		
-		
         // Combo de temporadas
         modelAndView.addObject("seasonList", fachadaSeason.getAvailableSeasons());
-        // Combo de carreras
-        modelAndView.addObject("racesList", fachadaSeason.getRaces(season));
+        
+        // Combo posiciones
+		modelAndView.addObject("racePositionList", racePositionList);
+		modelAndView.addObject("gridPositionList", gridPositionList);
+        
+        // Carreras
+        List<Race> races = fachadaSeason.getRaces(season);
+        modelAndView.addObject("racesList", races);
+        
+        // Managers
+        List<ManagerResult> managers = new ArrayList<>();
+        
+		// Añadimos la llamada al microservicio por cada carrera
+        Iterator<Race> racesIterator = races.iterator();
+		RestTemplate restTemplate = new RestTemplate();
+        while (racesIterator.hasNext()) {
+        	Race theRace = racesIterator.next();
+    		@SuppressWarnings("unchecked")
+    		List<ManagerResult> results = restTemplate.getForObject(hostManagerMicroservice + "managers/results/" + season.getIdSeason() + "/" + theRace.getIdRace(), List.class);
+        	
+    		// Se añade la información sobre el grupo al que pertenece cada manager y se genera el correspondiente enlace
+    		List<String> history = new ArrayList<>(); 
+    		List<String> positions = new ArrayList<>();
+    		if (results != null) {
+    			final Short seasonId = season.getIdSeason();
+    			
+    			for (int i = 0; i < results.size(); i++) {
+    				String code;
+    				try {
+    					code = PropertyUtils.getProperty(results.get(i), "codeManager").toString();
+    					populateGroupName(
+    							fachadaManager.getManagerHistory(fachadaManager.getManagerByCode(code).getIdManager(), seasonId),
+    							history,
+    							null,
+    							positions);
+    				} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+    					logger.error("Error getting code manager from list");
+    				}
+    			}
+
+    			// Añadimos la lista de managers en función de la carrera actual
+    			modelAndView.addObject("managersList", managers);
+    			modelAndView.addObject("history", history);
+    			modelAndView.addObject("currentPositions", positions);
+    			modelAndView.addObject("positionList", positionList);
+    		}
+        }
         
 		
 		modelAndView.setViewName("/results/putresultsmanager");
@@ -266,19 +270,21 @@ public class ResultsController {
 	private void populateGroupName(List<ManagerHistory> managerHistory, List<String> history, List<String> urls, List<String> positions) {
 		
 		managerHistory.forEach(hist -> {
-			String category = "";
-			if (hist.getIdGroup() == null) {
-				//Aquí se llamaría a getManagerHistory
-				category = fachadaCategory.getCategory(hist.getIdCategory()).getDescriptionCategory();
+			if (urls != null) {
+				String category = "";
+				if (hist.getIdGroup() == null) {
+					//Aquí se llamaría a getManagerHistory
+					category = fachadaCategory.getCategory(hist.getIdCategory()).getDescriptionCategory();
+				}
+				else {
+					//Aquí se llamaría a getManagerHistory
+					category = fachadaCategory.getCategory(hist.getIdCategory()).getDescriptionCategory() + " - " + hist.getIdGroup().toString(); 
+				}
+				history.add(category);
+				
+				UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.hostGPRO).pathSegment("Standings.asp").queryParam("Group", category);
+				urls.add(builder.toUriString());
 			}
-			else {
-				//Aquí se llamaría a getManagerHistory
-				category = fachadaCategory.getCategory(hist.getIdCategory()).getDescriptionCategory() + " - " + hist.getIdGroup().toString(); 
-			}
-			history.add(category);
-			
-			UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.hostGPRO).pathSegment("Standings.asp").queryParam("Group", category);
-			urls.add(builder.toUriString());
 			
 			positions.add(Short.toString(hist.getPosition()));
 		});
