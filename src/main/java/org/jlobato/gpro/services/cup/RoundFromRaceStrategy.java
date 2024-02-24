@@ -1,6 +1,5 @@
 package org.jlobato.gpro.services.cup;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Interface RoundFromRaceStrategy.
  */

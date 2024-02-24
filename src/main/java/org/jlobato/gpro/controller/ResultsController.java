@@ -111,7 +111,7 @@ public class ResultsController {
 		// Get the season object
         Season season = null;
         if (currentSeason != null) {
-        	season = fachadaSeason.getSeason(new Integer(currentSeason));
+        	season = fachadaSeason.getSeason(Integer.valueOf(currentSeason));
         } else {
             season = fachadaSeason.getCurrentSeason();
         }
@@ -196,10 +196,7 @@ public class ResultsController {
 		ModelAndView modelAndView = new ModelAndView();
 		
 		// Get the season object
-        Season season = fachadaSeason.getSeason(new Integer(currentSeason));
-        
-        // Get the race object
-        //Race race = fachadaSeason.getRace(season.getIdSeason(), 1);
+        Season season = fachadaSeason.getSeason(Integer.valueOf(currentSeason));
         
 		// Temporada actual
         modelAndView.addObject("currentSeasonID", season.getIdSeason());
