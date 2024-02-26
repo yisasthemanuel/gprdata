@@ -5,7 +5,7 @@
 						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
 
-	<http use-expressions="true">
+	<http use-expressions="true" request-matcher="mvc">
 		<intercept-url pattern="/login.html" access="permitAll" />
 		<intercept-url pattern="/css/**" access="permitAll" />
 		<intercept-url pattern="/fonts/**" access="permitAll" />

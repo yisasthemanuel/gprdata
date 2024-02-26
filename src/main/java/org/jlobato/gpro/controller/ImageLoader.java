@@ -57,7 +57,7 @@ public class ImageLoader {
              fis = new FileInputStream(file);
              PreparedStatement pstm = connection.prepareStatement("UPDATE manager set avatar_img = ? where id_manager = ?");
              pstm.setBinaryStream(1, fis,(int) file.length());
-             pstm.setInt(2, new Integer(id));
+             pstm.setInt(2, Integer.valueOf(id));
              pstm.execute();
              pstm.close();
              return true;

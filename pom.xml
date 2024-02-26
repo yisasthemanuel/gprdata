@@ -13,24 +13,31 @@
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>
     </dependency>
+    <!-- Jakarta Servlet API -->
     <dependency>
-    	<groupId>javax.servlet</groupId>
-    	<artifactId>servlet-api</artifactId>
-    	<version>2.4</version>
-    	<scope>provided</scope>
+        <groupId>jakarta.servlet</groupId>
+        <artifactId>jakarta.servlet-api</artifactId>
+        <version>5.0.0</version> <!-- Ajusta la versión según tu necesidad -->
+        <scope>provided</scope>
     </dependency>
-	<!--  JSTL dependencies -->
-    <dependency>
-		<groupId>javax.servlet</groupId>
-		<artifactId>jstl</artifactId>
-		<version>1.2</version>
-	</dependency>
-	<!--  Standard tags dependencies -->
-	<dependency>
-	    <groupId>taglibs</groupId>
-	    <artifactId>standard</artifactId>
-	    <version>1.1.2</version>
-	</dependency>	
+<!--    <dependency>-->
+<!--    	<groupId>javax.servlet</groupId>-->
+<!--    	<artifactId>servlet-api</artifactId>-->
+<!--    	<version>2.4</version>-->
+<!--    	<scope>provided</scope>-->
+<!--    </dependency>-->
+<!--	  JSTL dependencies -->
+<!--    <dependency>-->
+<!--		<groupId>javax.servlet</groupId>-->
+<!--		<artifactId>jstl</artifactId>-->
+<!--		<version>1.2</version>-->
+<!--	</dependency>-->
+<!--	  Standard tags dependencies -->
+<!--	<dependency>-->
+<!--	    <groupId>taglibs</groupId>-->
+<!--	    <artifactId>standard</artifactId>-->
+<!--	    <version>1.1.2</version>-->
+<!--	</dependency>	-->
     <dependency>
   		<groupId>org.springframework</groupId>
   		<artifactId>spring-context</artifactId>
@@ -44,7 +51,7 @@
 	<dependency>
   		<groupId>org.springframework</groupId>
   		<artifactId>spring-web</artifactId>
-  		<version>${org.springframework.version}</version>
+  		<version>${org.springframework.web.version}</version>
 	</dependency>
 	<dependency>
   		<groupId>org.springframework</groupId>
@@ -282,9 +289,10 @@
   	<org.jlobato.gpro.version>1.0.0.RELEASE</org.jlobato.gpro.version>
   	<org.jlobato.gpro.gprsheetparser.version>1.0.3.RELEASE</org.jlobato.gpro.gprsheetparser.version>
   	<org.jlobato.gproresults.version>1.2.0.RELEASE</org.jlobato.gproresults.version>  	
-  	<org.jlobato.gpro.mybatis.version>1.1.8.1.RELEASE</org.jlobato.gpro.mybatis.version>  	
-  	<org.springframework.version>5.3.18</org.springframework.version>
-  	<org.springframework.security.version>5.2.10.RELEASE</org.springframework.security.version>
+  	<org.jlobato.gpro.mybatis.version>1.2.0.0.RELEASE</org.jlobato.gpro.mybatis.version>  	
+  	<org.springframework.version>6.0.0</org.springframework.version>
+  	<org.springframework.web.version>6.0.0</org.springframework.web.version>
+  	<org.springframework.security.version>6.0.0</org.springframework.security.version>
     <slf4j.version>1.7.1</slf4j.version>
     <log4j.version>2.17.1</log4j.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -293,12 +301,12 @@
   	<com.fasterxml.jackson.jacksondatabind.version>2.13.4.1</com.fasterxml.jackson.jacksondatabind.version>
 	<java.build.version>1.8</java.build.version>
 	<java.source.version>1.8</java.source.version>
-	<maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+	<maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
     <failOnMissingWebXml>false</failOnMissingWebXml>
 	<docker.image.prefix>yisasthemanuel</docker.image.prefix>
 	<spring-cloud.version>Hoxton.SR1</spring-cloud.version>		
-	<net.bull.javamelody.version>1.85.0</net.bull.javamelody.version>    
+	<net.bull.javamelody.version>2.1.0</net.bull.javamelody.version>    
   </properties>
   
 <!-- Generar el informe de release  -->

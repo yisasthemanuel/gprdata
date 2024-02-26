@@ -193,7 +193,7 @@ public class GPROCalendarBrowserTest extends TestCase {
 						prefixIndex += prefixMatched.length();
 						int raceIndex = uid.getValue().indexOf(RACE_UID_DELIMITER, prefixIndex);
 						String seasonNumberStr = uid.getValue().substring(prefixIndex, raceIndex);
-						seasonNumber = new Integer(seasonNumberStr);
+						seasonNumber = Integer.valueOf(seasonNumberStr);
 					}
 				}
 				
@@ -218,10 +218,10 @@ public class GPROCalendarBrowserTest extends TestCase {
 					logger.info("Race number should be: " + idRace);
 					
 					//Asociados el id de carrera
-					race.withIdRace(new Short(idRace));
+					race.withIdRace(Short.valueOf(idRace));
 					
 					//Asociamos el id de season
-					race.withIdSeason(new Short((short)seasonNumber));
+					race.withIdSeason(Integer.valueOf(seasonNumber).shortValue());
 					
 					//Asociamos el codigo de carrera
 					race.withCodeRace("S" + seasonNumber + RACE_UID_DELIMITER + idRace);
@@ -271,7 +271,7 @@ public class GPROCalendarBrowserTest extends TestCase {
 			//Añadimos 6 días a la fecha de fin de temporada
 			eos = DateUtils.addDays(eos, 6);
 			
-			currentSeason.withIdSeason(new Short((short)seasonNumber)).
+			currentSeason.withIdSeason(Integer.valueOf(seasonNumber).shortValue()).
 				withSeasonNumber(seasonNumber).
 				withCode("S" + seasonNumber).
 				withNameSeason("Season " + seasonNumber).
