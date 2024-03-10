@@ -22,5 +22,10 @@
 		<property name="prefix" value="/WEB-INF/jsp/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
+	
+	<!-- Configuración del bean mvcHandlerMappingIntrospector -->
+	<bean id="mvcHandlerMappingIntrospector" class="org.springframework.web.servlet.handler.HandlerMappingIntrospector">
+		<!-- Agregar configuraciones específicas si es necesario -->
+	</bean>
 
 </beans>

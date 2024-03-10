@@ -8,7 +8,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     
 	<spring:message var="titlePage" code="default.theme.title"/>
-	<title><decorator:title default="${titlePage}" /></title>
+	<title><sitemesh:write property="${titlePage}" /></title>
 	  
 	<c:url var="faviconUrl" value="/favicon.ico"/>
 	<c:url var="gprdataCSS" value="/css/gprdata.css"/>
@@ -29,7 +29,7 @@
 	<a href="${mainAction}"><spring:message code="label.home"/></a>
 	
 	
-	<decorator:head/>
+	<sitemesh:write property="head"/>
 </head>  
 <body class="container full">
 	<header>  
@@ -47,7 +47,7 @@
 	</section>  
 	<section id="principal">
 		<div id="theprincipal">
-			<decorator:body/>
+			<sitemesh:write property="body"/>
 			<div id="cargando" style="display:none">
 				<p><spring:message code="general.cargando" /><img title="<spring:message code="general.cargando" />" src='${ctx}images/ajax-loader.gif' /></p>
 			</div>

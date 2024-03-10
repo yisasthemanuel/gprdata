@@ -2,8 +2,8 @@ package org.jlobato.gpro.controller;
 
 import java.io.OutputStream;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.jlobato.gpro.dao.mybatis.facade.FachadaManager;
 import org.jlobato.gpro.dao.mybatis.model.Manager;
