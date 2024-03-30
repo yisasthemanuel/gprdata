@@ -92,11 +92,16 @@ docker run -d -p 1234:8080 -e CONFIG_SERVER=http://192.168.0.38:8888 -e SPRING_P
 
 * **1.4.6.2 (06/11/2022)** - Se corrige la URL de la llamada al servicio de actualización de la posición de un manager.
 
-* **1.5.0.0 (29/03/2024)** - Se sube a la versión 6.0 de spring para elimingar varias vulnerabilidades de seguridad. Como consecuencia de lo anterior, también se sube a la versión temurin 17 de Java y a la versión 10 tomcat (imagen tomcat:jdk17-temurin)
+* **1.5.0.0 (30/03/2024)** - Se sube a la versión 6.0 de spring para elimingar varias vulnerabilidades de seguridad. Como consecuencia de lo anterior, también se sube a la versión temurin 17 de Java y a la versión 10 tomcat (imagen tomcat:jdk17-temurin)
+
+* **1.5.0.1 (30/03/2024)** - Se incluye un nuevo link en la página de la copa para consultar las reglas de la competición
+Se corrigen tres vulnerabilidades: 1) Access Control Bypass in Spring Security (se pasa a usar la versión 6.0.5 de spring security) 2) Spring Framework URL Parsing with Host Validation Vulnerability (se pasa a usar la versión 6.0.18 de spring web) 3) Spring Framework vulnerable to denial of service (se pasa a usar la versión 6.0.14 de spring webmvc
 
 ## TODOs
 
 * Hay que quitar algunas dependencias que obligan a que el contexto de la aplicación se llame gprdata
+* Incorporar un control adecuado de excepciones
+* Mejorar los controles de navegación entre temporadas (pantalla de copa y de resultados)
 
 ## Referencias [EN]
 
