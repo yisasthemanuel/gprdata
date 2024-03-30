@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-<title><decorator:title/></title>
+<title><sitemesh:write property="title"/></title>
 
 <c:url var="global9css" value="/images/global9.min.css"/>
 <c:url var="fchatcss" value="/images/fchat.css"/>
@@ -105,15 +105,15 @@ function logout() {
 <div align="center" style="margin-bottom:5px;margin-top:5px;"></div>
 
 <h1 class="block"><span class="tl bc"></span><span class="tr bc"></span><span class="bl bc"></span><span class="br bc"></span>
-Gulf Porsche Cup Standings ${currentSeason.nameSeason}
-<a href="" title="Previous season" alt="Previous season" class="prev">«</a>
-<a href="" title="Next season" alt="Next season" class="next">»</a>
+<spring:message code="label.copa.inner.title"/> ${currentSeason.nameSeason}
+<a href="" title="<spring:message code="label.copa.prev.season"/>" alt="<spring:message code="label.copa.prev.season"/>" class="prev"> &lt; </a>
+<a href="" title="<spring:message code="label.copa.next.season"/>" alt="<spring:message code="label.copa.next.season"/>" class="next"> &gt; </a>
 </h1>
 
 <br>
 
 <!-- START CONTENT -->			  
-<decorator:body/>
+<sitemesh:write property="body"/>
 <!-- END CONTENT -->
 
 </div>

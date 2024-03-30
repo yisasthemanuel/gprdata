@@ -8,7 +8,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     
 	<spring:message var="titlePage" code="default.theme.title"/>
-	<title><sitemesh:write property="${titlePage}" /></title>
+	<title><sitemesh:write property="title"/></title>
 	  
 	<c:url var="faviconUrl" value="/favicon.ico"/>
 	<c:url var="gprdataCSS" value="/css/gprdata.css"/>

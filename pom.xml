@@ -310,21 +310,18 @@
   	<org.springframework.web.version>6.0.0</org.springframework.web.version>
   	<org.springframework.security.version>6.0.0</org.springframework.security.version>
   	<jakarta.servlet-api.version>5.0.0</jakarta.servlet-api.version>
-  	<org.sitemesh.sitemesh.version>3.2.0-M2</org.sitemesh.sitemesh.version>
+  	<org.sitemesh.sitemesh.version>3.2.1</org.sitemesh.sitemesh.version>
     <slf4j.version>1.7.1</slf4j.version>
     <log4j.version>2.17.1</log4j.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   	<com.fasterxml.jackson.version>2.12.6</com.fasterxml.jackson.version>
   	<com.fasterxml.jackson.jacksondatabind.version>2.13.4.1</com.fasterxml.jackson.jacksondatabind.version>
-	<java.build.version>1.8</java.build.version>
-	<java.source.version>1.8</java.source.version>
-	<maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
+	<maven.compiler.release>17</maven.compiler.release>
     <failOnMissingWebXml>false</failOnMissingWebXml>
 	<docker.image.prefix>yisasthemanuel</docker.image.prefix>
 	<spring-cloud.version>Hoxton.SR1</spring-cloud.version>		
-	<net.bull.javamelody.version>2.1.0</net.bull.javamelody.version>    
+	<net.bull.javamelody.version>2.1.0</net.bull.javamelody.version>
   </properties>
   
 <!-- Generar el informe de release  -->

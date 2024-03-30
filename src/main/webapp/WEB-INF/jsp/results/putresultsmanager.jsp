@@ -24,12 +24,12 @@ function calculaSeason(urlAction, sentido) {
 	var seasonNumber = parseInt(season);
 	
 	if (sentido == 'previo') {
-		if (seasonNumber > 1) { //FaltarÌa controlar el mÌnimo
+		if (seasonNumber > 1) { //Faltar√≠a controlar el m√≠nimo
 			seasonNumber -= 1;
 		}
 	}
 	else {
-		seasonNumber += 1;//FaltarÌa controlar el maximo
+		seasonNumber += 1;//Faltar√≠a controlar el m√°ximo
 	}
 	
 	urlAction = '${managerAction}' + '?currentSeason=' + seasonNumber;
@@ -42,8 +42,8 @@ function calculaSeason(urlAction, sentido) {
 
 <form name="theForm" id="theForm">
 
-	<button type="button" id="putresultsrace" class="btn btn-primary"><spring:message code="label.resultados.by.race"/></button>
-
+	<!-- Bot√≥n provisional -->
+	<button type="button" visible="false" id="putresultsrace" class="btn btn-primary"><spring:message code="label.resultados.by.race"/></button>
 
 	<!-- Mensaje provisional -->
 	<spring:message code="label.result.manager.banner"/>

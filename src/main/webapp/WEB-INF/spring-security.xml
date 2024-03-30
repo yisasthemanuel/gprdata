@@ -30,6 +30,8 @@
 	<!-- Sin encriptación de claves -->
 	<b:bean id ="passwordEncoder" class="org.springframework.security.crypto.password.NoOpPasswordEncoder" factory-method="getInstance" />
 	
+	<b:bean id ="webexpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
+	
 	<!-- Autenticación por base de datos -->
 	<authentication-manager>
 	  <authentication-provider>

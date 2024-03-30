@@ -1,5 +1,13 @@
 <sitemesh>
-  <mapping path="/*" decorator="default-theme.jsp"/>
-  <mapping path="/gprcup/*" decorator="gprcup-theme.jsp"/>
-  <mapping path="/tyres/preview.html" exclude="true" />
+	<!-- Location of decorators. -->
+	<decorator-prefix>/decorators/</decorator-prefix>
+	
+	<!-- Map default decorator. This shall be applied to all paths if no other paths match. -->
+	<mapping decorator="default-theme.jsp"/>
+	
+	<!-- Map decorators to path patterns. -->
+	<mapping path="/gprcup/*" decorator="gprcup-theme.jsp"/>
+	
+	<!-- Exclude path from decoration. -->
+	<mapping path="/tyres/preview.html" exclude="true" />
 </sitemesh>
