@@ -27,6 +27,7 @@ import org.jlobato.gpro.utils.RomanNumeral;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -86,7 +87,10 @@ public class GprcupController {
 	private GPROCupService cupService;
 	
 	@Autowired
-	private SessionLocaleResolver locale; 
+	private SessionLocaleResolver locale;
+	
+	@Value("${gpro.gpr.cup.rules.url}")
+	private String cupRulesURL;
 
 	/**
 	 * Cup.
@@ -156,6 +160,7 @@ public class GprcupController {
         modelAndView.addObject("managersList", managers);
         modelAndView.addObject("racesList", fachadaSeason.getRaces(current));
         modelAndView.addObject("seasonList", fachadaSeason.getAvailableSeasons());
+        modelAndView.addObject("GPROCupRulesURL", cupRulesURL);
         
         logger.info("GprcupController.main - Temporada actual: {}", current.getNameSeason());
         modelAndView.addObject(CURRENT_SEASON, current);

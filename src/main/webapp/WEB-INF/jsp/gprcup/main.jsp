@@ -272,17 +272,23 @@
 	<br>
 	<table>
 		<tr>
-		<td>
-			<div>
-				<a href="${seedingActionURL}"><spring:message code="label.seeding"/></a>
-			</div>
-		</td>
-		<td>&nbsp;&nbsp;</td>
-		<td>
-			<div>
-				<a href="${statisticsActionURL}"><spring:message code="label.statistics"/></a>
-			</div>
-		</td>
+			<td>
+				<div>
+					<a href="${GPROCupRulesURL}" target="_blank"><spring:message code="label.rules"/></a>
+				</div>
+			</td>
+			<td>&nbsp;&nbsp;</td>
+			<td>
+				<div>
+					<a href="${seedingActionURL}"><spring:message code="label.seeding"/></a>
+				</div>
+			</td>
+			<td>&nbsp;&nbsp;</td>
+			<td>
+				<div>
+					<a href="${statisticsActionURL}"><spring:message code="label.statistics"/></a>
+				</div>
+			</td>
 		</tr>
 	</table>
 	
