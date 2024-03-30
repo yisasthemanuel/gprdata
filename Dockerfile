@@ -1,4 +1,4 @@
-FROM tomcat:9.0.30-jdk11-openjdk
+FROM tomcat:jdk17-temurin
 
 LABEL maintainer="yisasthemanuel@gmail.com"
 

@@ -4,7 +4,7 @@
   <groupId>org.jlobato.gpro</groupId>
   <artifactId>gprdata</artifactId>
   <packaging>war</packaging>
-  <version>1.4.6.2.RELEASE</version>
+  <version>1.5.0.0.RELEASE</version>
   <name>GPRO Data Webapp</name>
   <url>http://gprodata.yisasthemanuel.org</url>
   <dependencies>
@@ -34,24 +34,6 @@
 	    <version>2.0.0</version>
 <!--	    <scope>runtime</scope>-->
 	</dependency>
-<!--    <dependency>-->
-<!--    	<groupId>javax.servlet</groupId>-->
-<!--    	<artifactId>servlet-api</artifactId>-->
-<!--    	<version>2.4</version>-->
-<!--    	<scope>provided</scope>-->
-<!--    </dependency>-->
-<!--	  JSTL dependencies -->
-<!--    <dependency>-->
-<!--		<groupId>javax.servlet</groupId>-->
-<!--		<artifactId>jstl</artifactId>-->
-<!--		<version>1.2</version>-->
-<!--	</dependency>-->
-<!--	  Standard tags dependencies -->
-<!--	<dependency>-->
-<!--	    <groupId>taglibs</groupId>-->
-<!--	    <artifactId>standard</artifactId>-->
-<!--	    <version>1.1.2</version>-->
-<!--	</dependency>	-->
     <dependency>
   		<groupId>org.springframework</groupId>
   		<artifactId>spring-context</artifactId>
@@ -245,6 +227,16 @@
 				<version>2.2.6.RELEASE</version>
 		</plugin>
 		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-war-plugin</artifactId>
+			<version>3.3.2</version>
+		</plugin>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.8.1</version>
+		</plugin>
+		<plugin>
 	            <groupId>com.spotify</groupId>
 	            <artifactId>dockerfile-maven-plugin</artifactId>
 	            <version>1.4.9</version>
@@ -317,6 +309,8 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   	<com.fasterxml.jackson.version>2.12.6</com.fasterxml.jackson.version>
   	<com.fasterxml.jackson.jacksondatabind.version>2.13.4.1</com.fasterxml.jackson.jacksondatabind.version>
+  	<maven.compiler.source>17</maven.compiler.source>
+  	<maven.compiler.target>17</maven.compiler.target>
 	<maven.compiler.release>17</maven.compiler.release>
     <failOnMissingWebXml>false</failOnMissingWebXml>
 	<docker.image.prefix>yisasthemanuel</docker.image.prefix>
