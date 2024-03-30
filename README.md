@@ -4,7 +4,7 @@
 ## Ejecución de la imagen
 
 ```shell
-docker run -d -e entorno=I -e DOCKER_TIMEZONE=Europe/Madrid -p 8080:8080 --name yisas-gprdata --rm yisasthemanuel/gprdata:1.5.0.0.RELEASE
+docker run -d -e entorno=I -e DOCKER_TIMEZONE=Europe/Madrid -p 8080:8080 --name yisas-gprdata --rm yisasthemanuel/gprdata:1.5.0.1.RELEASE
 ```
 
 ** Banner generado con la fuente alligator2 (https://devops.datenkollektiv.de/banner.txt/index.html)
