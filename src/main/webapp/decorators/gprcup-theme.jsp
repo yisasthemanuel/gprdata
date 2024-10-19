@@ -106,7 +106,7 @@ function logout() {
 
 <h1 class="block"><span class="tl bc"></span><span class="tr bc"></span><span class="bl bc"></span><span class="br bc"></span>
 <spring:message code="label.copa.inner.title"/> ${currentSeason.nameSeason}
-<a href="" title="<spring:message code="label.copa.prev.season"/>" alt="<spring:message code="label.copa.prev.season"/>" class="prev"> &lt; </a>
+<a href="" title="<spring:message code="label.copa.prev.season"/>" alt="<spring:message code="label.copa.prev.season"/>" class="prev"> &lt;</a>
 <a href="" title="<spring:message code="label.copa.next.season"/>" alt="<spring:message code="label.copa.next.season"/>" class="next"> &gt; </a>
 </h1>
 
