@@ -308,7 +308,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   	<com.fasterxml.jackson.version>2.12.6</com.fasterxml.jackson.version>
-  	<com.fasterxml.jackson.jacksondatabind.version>2.13.4.1</com.fasterxml.jackson.jacksondatabind.version>
+  	<com.fasterxml.jackson.jacksondatabind.version>2.13.4.2</com.fasterxml.jackson.jacksondatabind.version>
   	<maven.compiler.source>17</maven.compiler.source>
   	<maven.compiler.target>17</maven.compiler.target>
 	<maven.compiler.release>17</maven.compiler.release>
