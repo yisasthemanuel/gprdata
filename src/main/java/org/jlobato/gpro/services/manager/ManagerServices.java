@@ -68,6 +68,9 @@ public class ManagerServices {
 	
 	/** The Constant STEVEN_MANAGER_CODE. */
 	public static final String STEVEN_MANAGER_CODE = "STEVEN";
+	
+	/** The Constant MAZ_MANAGER_CODE. */
+	public static final String MAZ_MANAGER_CODE = "MAZ";
 		
 	/**
 	 * The main method.

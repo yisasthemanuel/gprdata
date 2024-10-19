@@ -4,7 +4,7 @@
 ## Ejecución de la imagen
 
 ```shell
-docker run -d -e entorno=I -e DOCKER_TIMEZONE=Europe/Madrid -p 8080:8080 --name yisas-gprdata --rm yisasthemanuel/gprdata:1.5.0.1.RELEASE
+docker run -d -e entorno=I -e DOCKER_TIMEZONE=Europe/Madrid -p 8080:8080 --name yisas-gprdata --rm yisasthemanuel/gprdata:1.5.0.2.RELEASE
 ```
 
 ** Banner generado con la fuente alligator2 (https://devops.datenkollektiv.de/banner.txt/index.html)
@@ -96,6 +96,8 @@ docker run -d -p 1234:8080 -e CONFIG_SERVER=http://192.168.0.38:8888 -e SPRING_P
 
 * **1.5.0.1 (30/03/2024)** - Se incluye un nuevo link en la página de la copa para consultar las reglas de la competición
 Se corrigen tres vulnerabilidades: 1) Access Control Bypass in Spring Security (se pasa a usar la versión 6.0.5 de spring security) 2) Spring Framework URL Parsing with Host Validation Vulnerability (se pasa a usar la versión 6.0.18 de spring web) 3) Spring Framework vulnerable to denial of service (se pasa a usar la versión 6.0.14 de spring webmvc
+
+* **1.5.0.2 (19/10/2024)** - Se corrigen cuatro vulnerabilidades: 1) se pasa a usar la versión 6.0.23 de spring web 2) se pasa a usar la versión 6.1.14 de spring context 3) se pasa a usar la versión 6.0.7 de spring security 4) se pasa a usar la versión 2.13.4.2 de jackson
 
 ## TODOs
 
