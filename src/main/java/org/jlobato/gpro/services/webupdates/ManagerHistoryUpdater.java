@@ -56,7 +56,7 @@ public class ManagerHistoryUpdater {
 		managerService.updateManagerHistory(
 				manager.getCodeManager(),
 				(short)idSeason,
-				category.getIdCategory(),
+				Short.valueOf(category.getIdCategory().toString()),
 				group != null ? group.shortValue() : null,
 				tyreBrand != null ? tyreBrand.getIdTyreBrand() : null,
 				(short)position,
@@ -98,7 +98,7 @@ public class ManagerHistoryUpdater {
 				
 				//TODO Cambiar a version 1.1.4 de mybatis
 				Optional<Category> optCategory = Optional.ofNullable(categoryService.getCategoryByAltCode(GPROUtils.getCategoryCode(season.getGroup())));
-				Short idCategory = optCategory.map(category -> category.getIdCategory()).orElse(null); 
+				Integer idCategory = optCategory.map(category -> category.getIdCategory()).orElse(null); 
 				Short idGroup = GPROUtils.castIfNotNull(GPROUtils.getGroupId(season.getGroup()), Short.class);
 				Short position = GPROUtils.castIfNotNull(season.getPosition(), Short.class);
 				Short wins = GPROUtils.castIfNotNull(season.getWins(), Short.class);
@@ -115,7 +115,7 @@ public class ManagerHistoryUpdater {
 				if (idCategory != null) { // El idSeason ya ha sido comprobado antes
 					managerService.updateManagerHistory(manager.getCodeManager(),
 							idSeason,
-							idCategory,
+							Short.valueOf(idCategory.toString()),
 							idGroup,
 							tyreBrand,
 							position,
