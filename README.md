@@ -99,6 +99,8 @@ Se corrigen tres vulnerabilidades: 1) Access Control Bypass in Spring Security (
 
 * **1.5.0.2 (19/10/2024)** - Se corrigen cuatro vulnerabilidades: 1) se pasa a usar la versión 6.0.23 de spring web 2) se pasa a usar la versión 6.1.14 de spring context 3) se pasa a usar la versión 6.0.7 de spring security 4) se pasa a usar la versión 2.13.4.2 de jackson
 
+* **1.5.0.3 (20/10/2024)** - A raíz de los cambios en la version 1.5.0.2 se tienen que hacer las siguientes subidas de versiones: 1) jackson y jackson databind a la 2.14.3 2) spring web a la 6.1.13 3) jlobato mybatis a la 1.2.0.2
+
 ## TODOs
 
 * Hay que quitar algunas dependencias que obligan a que el contexto de la aplicación se llame gprdata
