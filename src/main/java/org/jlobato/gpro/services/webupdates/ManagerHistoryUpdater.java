@@ -98,7 +98,7 @@ public class ManagerHistoryUpdater {
 				
 				//TODO Cambiar a version 1.1.4 de mybatis
 				Optional<Category> optCategory = Optional.ofNullable(categoryService.getCategoryByAltCode(GPROUtils.getCategoryCode(season.getGroup())));
-				Integer idCategory = optCategory.map(category -> category.getIdCategory()).orElse(null); 
+				Short idCategory = optCategory.map(category -> category.getIdCategory()).orElse(null); 
 				Short idGroup = GPROUtils.castIfNotNull(GPROUtils.getGroupId(season.getGroup()), Short.class);
 				Short position = GPROUtils.castIfNotNull(season.getPosition(), Short.class);
 				Short wins = GPROUtils.castIfNotNull(season.getWins(), Short.class);
