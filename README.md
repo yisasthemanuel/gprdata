@@ -4,7 +4,7 @@
 ## Ejecución de la imagen
 
 ```shell
-docker run -d -e entorno=I -e DOCKER_TIMEZONE=Europe/Madrid -p 8080:8080 --name yisas-gprdata --rm yisasthemanuel/gprdata:1.5.0.3.RELEASE
+docker run -d -e entorno=I -e DOCKER_TIMEZONE=Europe/Madrid -p 8080:8080 --name yisas-gprdata --rm yisasthemanuel/gprdata:1.5.0.4.RELEASE
 ```
 
 ** Banner generado con la fuente alligator2 (https://devops.datenkollektiv.de/banner.txt/index.html)
@@ -100,6 +100,11 @@ Se corrigen tres vulnerabilidades: 1) Access Control Bypass in Spring Security (
 * **1.5.0.2 (19/10/2024)** - Se corrigen cuatro vulnerabilidades: 1) se pasa a usar la versión 6.0.23 de spring web 2) se pasa a usar la versión 6.1.14 de spring context 3) se pasa a usar la versión 6.0.7 de spring security 4) se pasa a usar la versión 2.13.4.2 de jackson
 
 * **1.5.0.3 (20/10/2024)** - A raíz de los cambios en la version 1.5.0.2 se tienen que hacer las siguientes subidas de versiones: 1) jackson y jackson databind a la 2.14.3 2) spring web a la 6.1.13 3) jlobato mybatis a la 1.2.0.2
+
+* **1.5.0.4 (27/10/2024)** - Se corrigen los controladores TyresController, ResultsController, ImageController y GprcupController para que todos los parámetros de los endpoints tengan su etiqueta (RequestMapping, PathVariable, etc.) y el nombre del parámetro especificado para asegurar que el compilador obtenga el parámetro enviado en la petición. Esto afectaba a lo siguiente:
+    * No se mostraban las imágenes de los managers en la página de resultados
+    * No salía la vista previa para el cajetín de los neumáticos con los datos del TCD para la Q1, Q2 y Carrera
+    * No se realizaban las descargas para los posts de la clasificación de la copa, de las estadísticas de la copa y de los emparejamientos de la primera jornada.
 
 ## TODOs
 

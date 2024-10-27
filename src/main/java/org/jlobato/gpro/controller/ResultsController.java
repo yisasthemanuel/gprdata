@@ -84,7 +84,7 @@ public class ResultsController {
 	 * @return the string
 	 */
 	@GetMapping(value = "/allraces", produces = "application/json")
-	public @ResponseBody String allraces(HttpServletRequest request, HttpSession session, String codSeason)	{
+	public @ResponseBody String allraces(HttpServletRequest request, HttpSession session, @RequestParam("codSeason") String codSeason)	{
 		logger.debug("ResultsController.getSeasonRaces - begin for season {}", request.getParameter("codSeason"));
 		logger.debug("ResultsController.getSeasonRaces - begin for season {} ", codSeason);
 		logger.debug("ResultsController.getSeasonRaces - end for season {}", request.getParameter("codSeason"));

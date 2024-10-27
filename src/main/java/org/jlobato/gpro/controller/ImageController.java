@@ -40,7 +40,7 @@ public class ImageController {
 	 * @param response the response
 	 */
 	@GetMapping(value = "/manager/{managerId}/show.html")
-	public void showImage(@PathVariable String managerId, HttpServletRequest request, HttpServletResponse response) {
+	public void showImage(@PathVariable("managerId") String managerId, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			//Vamos a recibir como parámetro el id del manager
 			//Esto se podría generalizar luego para cualquier objeto de dominio

@@ -558,7 +558,7 @@ public class GprcupController {
 			HttpServletRequest request,
 			HttpSession session,
 			HttpServletResponse response,
-			String screenshotURL) throws TemplateException, ParseException {
+			@RequestParam(value="screenshotURL", required=false) String screenshotURL) throws TemplateException, ParseException {
 		logger.debug("GprcupController.exportStatistics - begin");
 		CupStandingsSnapshot cupStandings = getCupStandings(request);
 
