@@ -300,7 +300,7 @@
   	<org.jlobato.gpro.gprowebsession.version>1.0.1.RELEASE</org.jlobato.gpro.gprowebsession.version>
   	<org.springframework.version>6.1.14</org.springframework.version>
   	<org.springframework.web.version>6.1.14</org.springframework.web.version>
-  	<org.springframework.security.version>6.0.7</org.springframework.security.version>
+  	<org.springframework.security.version>6.2.7</org.springframework.security.version>
   	<jakarta.servlet-api.version>5.0.0</jakarta.servlet-api.version>
   	<org.sitemesh.sitemesh.version>3.2.1</org.sitemesh.sitemesh.version>
     <slf4j.version>1.7.1</slf4j.version>
